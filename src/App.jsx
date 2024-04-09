@@ -20,11 +20,10 @@ function App() {
     if (token) {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp * 1000 < Date.now()) {
-        // Token has expired
         handleLogout();
       } else {
         setLoggedIn(true);
-        setNickname(decodedToken.nickname);
+        setNickname(decodedToken.user.username);
       }
     }
   }, []);
@@ -57,7 +56,7 @@ function App() {
     } catch (error) {
       console.error('Authorization failed:', error);
       if (error.response && error.response.status === 401) {
-        handleLogout(); // Unauthorized or expired token, logout user
+        handleLogout();
       }
     }
   };
