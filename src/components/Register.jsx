@@ -10,7 +10,7 @@ const Register = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        'http://wierzba.wzks.uj.edu.pl:12122/signup',
+        'https://wierzba.wzks.uj.edu.pl:12122/signup',
         {
           username,
           password,

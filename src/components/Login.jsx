@@ -11,7 +11,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://wierzba.wzks.uj.edu.pl:12122/login',
+        'https://wierzba.wzks.uj.edu.pl:12122/login',
         {
           username,
           password,
