@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigateTo = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +18,7 @@ const Login = ({ onLogin }) => {
       localStorage.setItem('userId', response.data.userId);
       localStorage.setItem('nickname', response.data.nickname);
       console.log('Login successful:', response.data);
-      onLogin(); // Inform the parent component about successful login
+      navigateTo('/home');
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -25,6 +26,7 @@ const Login = ({ onLogin }) => {
 
   return (
     <>
+      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <input
           type='text'
@@ -42,10 +44,6 @@ const Login = ({ onLogin }) => {
       </form>
     </>
   );
-};
-
-Login.propTypes = {
-  onLogin: PropTypes.func.isRequired,
 };
 
 export default Login;

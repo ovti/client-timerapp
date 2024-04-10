@@ -143,76 +143,84 @@ const Timer = () => {
 
   return (
     <>
-      <div className='bg-gray-900 p-4'>
-        <div className='flex items-center justify-between mb-4 p-4'>
-          <button
-            id='startPauseTimer'
-            className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
-            onClick={isTimerRunning ? pauseTimer : startTimer}
+      <div className='w-1/4 mx-auto mt-8'>
+        <div className='bg-gray-900 p-4 rounded-t-lg'>
+          <div className='flex items-center justify-between mb-4 p-4'>
+            <button
+              id='startPauseTimer'
+              className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
+              onClick={isTimerRunning ? pauseTimer : startTimer}
+            >
+              {isTimerRunning
+                ? paused
+                  ? 'Resume Timer'
+                  : 'Pause Timer'
+                : 'Start Timer'}
+            </button>
+            <button
+              id='resetTimer'
+              className='bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600'
+              onClick={() => {
+                clearInterval(timer);
+                setTimer(null);
+                setIsTimerRunning(false);
+                setCurrentTimer(0);
+                setProgress(0);
+                setRemainingTime(0);
+              }}
+            >
+              Reset Timer
+            </button>
+          </div>
+          <div className='flex items-center justify-between mb-4'>
+            <p id='timerDisplay' className='text-xl font-semibold mb-4'>
+              Timer: {currentTimer} seconds
+            </p>
+          </div>
+          <div className='relative h-4 bg-gray-700 rounded'>
+            <div
+              id='progressBar'
+              className='h-full bg-blue-500 rounded'
+              style={{ width: `${progress}%`, transition: 'width 1.3s linear' }}
+            ></div>
+          </div>
+          <select
+            id='timerDuration'
+            className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
+            value={selectedDuration}
+            onChange={(e) => setSelectedDuration(Number(e.target.value))}
           >
-            {isTimerRunning
-              ? paused
-                ? 'Resume Timer'
-                : 'Pause Timer'
-              : 'Start Timer'}
-          </button>
-          <button
-            id='resetTimer'
-            className='bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600'
-            onClick={() => {
-              clearInterval(timer);
-              setTimer(null);
-              setIsTimerRunning(false);
-              setCurrentTimer(0);
-              setProgress(0);
-              setRemainingTime(0);
-            }}
-          >
-            Reset Timer
-          </button>
-        </div>
-        <div className='flex items-center justify-between mb-4'>
-          <p id='timerDisplay' className='text-xl font-semibold mb-4'>
-            Timer: {currentTimer} seconds
-          </p>
-        </div>
-        <div className='relative h-4 bg-gray-700 rounded'>
-          <div
-            id='progressBar'
-            className='h-full bg-blue-500 rounded'
-            style={{ width: `${progress}%`, transition: 'width 1s linear' }}
-          ></div>
-        </div>
-        <select
-          id='timerDuration'
-          className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
-          value={selectedDuration}
-          onChange={(e) => setSelectedDuration(Number(e.target.value))}
-        >
-          <option value='5'>5 seconds</option>
-          <option value='6'>6 seconds</option>
-          <option value='7'>7 seconds</option>
-        </select>
+            <option value='5'>5 seconds</option>
+            <option value='6'>6 seconds</option>
+            <option value='7'>7 seconds</option>
+          </select>
 
-        <input
-          id='customDuration'
-          className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
-          type='text'
-          placeholder='Custom duration in seconds'
-          value={selectedDuration}
-          onChange={(e) => setSelectedDuration(Number(e.target.value))}
-        />
-      </div>
-      <div className='bg-gray-800 p-4'>
-        <h2 className='text-xl text-gray-200 font-semibold mb-2'>
-          Today&apos;s Session Data
-        </h2>
-        <p id='sessionCount' className=' text-gray-200 mb-2 text-m'>
-          Sessions today: {sessionCount}
-        </p>
-        <p id='totalDuration' className=' text-gray-200 text-m'>
-          Total duration today: {totalDuration} seconds
-        </p>
+          <input
+            id='customDuration'
+            className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
+            type='text'
+            placeholder='Custom duration in seconds'
+            value={selectedDuration}
+            onChange={(e) => setSelectedDuration(Number(e.target.value))}
+          />
+        </div>
+        <div className='bg-gray-800 p-4'>
+          <h2 className='text-xl text-gray-200 font-semibold mb-2'>
+            Today&apos;s Session Data
+          </h2>
+          {sessionCount === 0 ? (
+            <p className='text-gray-200 text-m'>No sessions today</p>
+          ) : (
+            <>
+              <p className='text-gray-200 text-m'>
+                Sessions today: {sessionCount}
+              </p>
+              <p className='text-gray-200 text-m'>
+                Total duration today: {totalDuration} seconds
+              </p>
+            </>
+          )}
+        </div>
       </div>
     </>
   );
