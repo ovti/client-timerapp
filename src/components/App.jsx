@@ -36,6 +36,16 @@ function App() {
   return (
     <>
       <Nav loggedIn={loggedIn} onLogout={handleLogout} />
+      {!loggedIn && (
+        <div className='flex items-center justify-center mb-3'>
+          <div className='grid grid-cols-1 gap-6'>
+            <h1 className='text-9xl font-bold text-center'>Timer App</h1>
+            <p className='text-center text-4xl'>
+              Please login or register to continue
+            </p>
+          </div>
+        </div>
+      )}
       <Outlet loggedIn={loggedIn} id={id} nickname={nickname} />
     </>
   );

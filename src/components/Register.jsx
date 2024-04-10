@@ -27,28 +27,38 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <input
-        type='text'
-        placeholder='Username'
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type='password'
-        placeholder='Password'
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <input
-        type='password'
-        placeholder='Confirm Password'
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      />
-      <button onClick={handleSubmit}>Register</button>
-      {error && <p>{error}</p>}
+    <div className='flex items-center justify-center'>
+      <div className='grid grid-cols-1 gap-6'>
+        <h1 className='text-4xl font-bold text-center'>Register</h1>
+        <input
+          type='text'
+          placeholder='Username'
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className='p-2 border border-gray-300 rounded'
+        />
+        <input
+          type='password'
+          placeholder='Password'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className='p-2 border border-gray-300 rounded'
+        />
+        <input
+          type='password'
+          placeholder='Confirm Password'
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className='p-2 border border-gray-300 rounded'
+        />
+        <button
+          onClick={handleSubmit}
+          className='p-2 bg-blue-500 text-white rounded'
+        >
+          Register
+        </button>
+        {error && <p className='text-red-500'>{error}</p>}
+      </div>
     </div>
   );
 };

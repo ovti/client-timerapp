@@ -17,18 +17,22 @@ function Nav({ loggedIn, onLogout }) {
         </div>
         <div className='w-full block flex-grow lg:flex lg:items-center lg:w-auto'>
           <div className='text-xl lg:flex-grow'>
-            <Link
-              to='/register'
-              className='block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4'
-            >
-              Register
-            </Link>
-            <Link
-              to='/login'
-              className='block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4'
-            >
-              Login
-            </Link>
+            {!loggedIn && (
+              <>
+                <Link
+                  to='/register'
+                  className='block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4'
+                >
+                  Register
+                </Link>
+                <Link
+                  to='/login'
+                  className='block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4'
+                >
+                  Login
+                </Link>
+              </>
+            )}
           </div>
           <div>
             {loggedIn && (

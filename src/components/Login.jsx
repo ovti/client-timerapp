@@ -19,30 +19,38 @@ const Login = () => {
       localStorage.setItem('nickname', response.data.nickname);
       console.log('Login successful:', response.data);
       navigateTo('/home');
+      window.location.reload(); //change later
     } catch (error) {
       console.error('Login failed:', error);
     }
   };
 
   return (
-    <>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+    <div className='flex items-center justify-center'>
+      <div className='grid grid-cols-1 gap-6'>
+        <h1 className='text-4xl font-bold text-center'>Login</h1>
         <input
           type='text'
           placeholder='Username'
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className='p-2 border border-gray-300 rounded'
         />
         <input
           type='password'
           placeholder='Password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className='p-2 border border-gray-300 rounded'
         />
-        <button type='submit'>Login</button>
-      </form>
-    </>
+        <button
+          onClick={handleSubmit}
+          className='p-2 bg-blue-500 text-white rounded'
+        >
+          Login
+        </button>
+      </div>
+    </div>
   );
 };
 
