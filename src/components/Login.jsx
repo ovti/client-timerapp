@@ -14,6 +14,7 @@ const Login = ({ onLogin }) => {
         password,
       });
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.userId);
       localStorage.setItem('nickname', response.data.nickname);
       console.log('Login successful:', response.data);
       onLogin(); // Inform the parent component about successful login

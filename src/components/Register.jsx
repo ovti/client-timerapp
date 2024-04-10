@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -6,14 +7,12 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleRegister = async () => {
+  const handleSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:3000/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password, confirmPassword }),
+      const response = await axios.post('http://localhost:3000/signup', {
+        username,
+        password,
+        confirmPassword,
       });
       if (response.status === 400) {
         setError('User already exists');
@@ -48,7 +47,7 @@ const Register = () => {
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
       />
-      <button onClick={handleRegister}>Register</button>
+      <button onClick={handleSubmit}>Register</button>
       {error && <p>{error}</p>}
     </div>
   );
