@@ -59,9 +59,7 @@ function App() {
           handleLogin,
         }}
       />
-
-      {/* if logged in then display home component */}
-      {loggedIn && <Home />}
+      {loggedIn && <Home id={id} />}
     </>
   );
 }
