@@ -65,7 +65,7 @@ const Timer = () => {
       const fetchSessionData = async () => {
         try {
           const sessionResponse = await axios.get(
-            `http://wierzba.wzks.uj.edu.pl:12122/sessionCountToday/${userId}`,
+            `http://localhost:3000/sessionCountToday/${userId}`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -75,7 +75,7 @@ const Timer = () => {
           const sessionData = sessionResponse.data;
 
           const durationResponse = await axios.get(
-            `http://wierzba.wzks.uj.edu.pl:12122/totalDurationToday/${userId}`,
+            `http://localhost:3000/totalDurationToday/${userId}`,
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -91,7 +91,7 @@ const Timer = () => {
         }
       };
       const response = await axios.post(
-        `http://wierzba.wzks.uj.edu.pl:12122/saveTimerSession/${userId}/${selectedDuration}`,
+        `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}`,
         null,
         {
           headers: {
@@ -110,7 +110,7 @@ const Timer = () => {
     const fetchSessionData = async () => {
       try {
         const sessionResponse = await axios.get(
-          `http://wierzba.wzks.uj.edu.pl:12122/sessionCountToday/${userId}`,
+          `http://localhost:3000/sessionCountToday/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -120,7 +120,7 @@ const Timer = () => {
         const sessionData = sessionResponse.data;
 
         const durationResponse = await axios.get(
-          `http://wierzba.wzks.uj.edu.pl:12122/totalDurationToday/${userId}`,
+          `http://localhost:3000/totalDurationToday/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,

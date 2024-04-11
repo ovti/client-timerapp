@@ -10,13 +10,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        'https://wierzba.wzks.uj.edu.pl:12122/login',
-        {
-          username,
-          password,
-        }
-      );
+      const response = await axios.post('http://localhost:3000/login', {
+        username,
+        password,
+      });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userId', response.data.userId);
       localStorage.setItem('nickname', response.data.nickname);

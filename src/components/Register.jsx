@@ -9,14 +9,11 @@ const Register = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(
-        'http://wierzba.wzks.uj.edu.pl:12122/signup',
-        {
-          username,
-          password,
-          confirmPassword,
-        }
-      );
+      const response = await axios.post('http://localhost:3000/signup', {
+        username,
+        password,
+        confirmPassword,
+      });
       if (response.status === 400) {
         setError('User already exists');
       } else if (response.status === 401) {
