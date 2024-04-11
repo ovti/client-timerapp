@@ -3,7 +3,7 @@ import App from './App';
 import ErrorPage from './ErrorPage';
 import Register from './Register';
 import Login from './Login';
-import Home from './Home';
+// import Home from './Home';
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -20,10 +20,10 @@ const Router = () => {
           path: '/login',
           element: <Login />,
         },
-        {
-          path: '/home',
-          element: <Home />,
-        },
+        // {
+        //   path: '/home',
+        //   element: <Home />,
+        // },
       ],
     },
   ]);

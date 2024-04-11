@@ -13,6 +13,35 @@ const Timer = () => {
   const [remainingTime, setRemainingTime] = useState(0);
   const userId = localStorage.getItem('userId');
 
+  const fetchSessionDataAndDuration = async () => {
+    try {
+      const sessionResponse = await axios.get(
+        `http://localhost:3000/sessionCountToday/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+      const sessionData = sessionResponse.data;
+
+      const durationResponse = await axios.get(
+        `http://localhost:3000/totalDurationToday/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+      const durationData = durationResponse.data;
+
+      setSessionCount(sessionData.sessionCount);
+      setTotalDuration(durationData.totalDuration);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   const startTimer = () => {
     setIsTimerRunning(true);
     const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
@@ -62,34 +91,6 @@ const Timer = () => {
 
   const saveTimerSession = async () => {
     try {
-      const fetchSessionData = async () => {
-        try {
-          const sessionResponse = await axios.get(
-            `http://localhost:3000/sessionCountToday/${userId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-              },
-            }
-          );
-          const sessionData = sessionResponse.data;
-
-          const durationResponse = await axios.get(
-            `http://localhost:3000/totalDurationToday/${userId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-              },
-            }
-          );
-          const durationData = durationResponse.data;
-
-          setSessionCount(sessionData.sessionCount);
-          setTotalDuration(durationData.totalDuration);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
       const response = await axios.post(
         `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}`,
         null,
@@ -100,43 +101,14 @@ const Timer = () => {
         }
       );
       console.log(response);
-      fetchSessionData();
+      fetchSessionDataAndDuration();
     } catch (error) {
       console.error('Error saving timer session:', error);
     }
   };
 
   useEffect(() => {
-    const fetchSessionData = async () => {
-      try {
-        const sessionResponse = await axios.get(
-          `http://localhost:3000/sessionCountToday/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          }
-        );
-        const sessionData = sessionResponse.data;
-
-        const durationResponse = await axios.get(
-          `http://localhost:3000/totalDurationToday/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          }
-        );
-        const durationData = durationResponse.data;
-
-        setSessionCount(sessionData.sessionCount);
-        setTotalDuration(durationData.totalDuration);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchSessionData();
+    fetchSessionDataAndDuration();
 
     return () => clearInterval(timer);
   }, [userId, selectedDuration, timer]);
@@ -181,7 +153,7 @@ const Timer = () => {
             <div
               id='progressBar'
               className='h-full bg-blue-500 rounded'
-              style={{ width: `${progress}%`, transition: 'width 1.3s linear' }}
+              style={{ width: `${progress}%`, transition: 'width 1s linear' }}
             ></div>
           </div>
           <select

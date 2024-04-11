@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Nav from './Nav';
+import Home from './Home';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -35,7 +36,11 @@ function App() {
 
   return (
     <>
-      <Nav loggedIn={loggedIn} onLogout={handleLogout} />
+      <Nav
+        loggedIn={loggedIn}
+        onLogout={handleLogout}
+        handleLogin={handleLogin}
+      />
       {!loggedIn && (
         <div className='flex items-center justify-center mb-3'>
           <div className='grid grid-cols-1 gap-6'>
@@ -46,7 +51,17 @@ function App() {
           </div>
         </div>
       )}
-      <Outlet loggedIn={loggedIn} id={id} nickname={nickname} />
+      <Outlet
+        context={{
+          loggedIn,
+          id,
+          nickname,
+          handleLogin,
+        }}
+      />
+
+      {/* if logged in then display home component */}
+      {loggedIn && <Home />}
     </>
   );
 }

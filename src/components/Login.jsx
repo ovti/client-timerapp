@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigateTo = useNavigate();
+  const handleLogin = useOutletContext().handleLogin;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,8 +20,8 @@ const Login = () => {
       localStorage.setItem('userId', response.data.userId);
       localStorage.setItem('nickname', response.data.nickname);
       console.log('Login successful:', response.data);
-      navigateTo('/home');
-      window.location.reload(); //change later
+      handleLogin();
+      navigateTo('/');
     } catch (error) {
       console.error('Login failed:', error);
     }
