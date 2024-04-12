@@ -3,6 +3,7 @@ import App from './App';
 import ErrorPage from './ErrorPage';
 import Register from './Register';
 import Login from './Login';
+import Categories from './Categories';
 // import Home from './Home';
 
 const Router = () => {
@@ -19,6 +20,10 @@ const Router = () => {
         {
           path: '/login',
           element: <Login />,
+        },
+        {
+          path: '/categories',
+          element: <Categories />,
         },
         // {
         //   path: '/home',

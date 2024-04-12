@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Timer = () => {
@@ -192,6 +193,20 @@ const Timer = () => {
               </p>
             </>
           )}
+          <div className='flex items-center justify-between align-middle mt-4'>
+            <Link
+              // to='/stats'
+              className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
+            >
+              View all stats
+            </Link>
+            <Link
+              to='/categories'
+              className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
+            >
+              View all categories
+            </Link>
+          </div>
         </div>
       </div>
     </>
