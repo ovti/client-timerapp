@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Register = () => {
@@ -6,6 +8,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const navigateTo = useNavigate();
 
   const handleSubmit = async () => {
     try {
@@ -15,13 +18,17 @@ const Register = () => {
         confirmPassword,
       });
       if (response.status === 400) {
+        toast.error('User already exists');
         setError('User already exists');
       } else if (response.status === 401) {
+        toast.error('Passwords do not match');
         setError('Passwords do not match');
       } else {
-        window.location.href = '/';
+        toast.success('Registration successful');
+        navigateTo('/login');
       }
     } catch (err) {
+      toast.error('Registration failed');
       console.error(err);
     }
   };

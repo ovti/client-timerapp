@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const Login = () => {
@@ -15,6 +16,8 @@ const Login = () => {
         username,
         password,
       });
+      toast.success('Login successful');
+
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userId', response.data.userId);
       localStorage.setItem('nickname', response.data.nickname);
@@ -22,6 +25,7 @@ const Login = () => {
       handleLogin();
       navigateTo('/');
     } catch (error) {
+      toast.error('Login failed');
       console.error('Login failed:', error);
     }
   };

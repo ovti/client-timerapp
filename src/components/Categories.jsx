@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const Categories = () => {
@@ -38,9 +39,11 @@ const Categories = () => {
           },
         }
       );
+      toast.success('Category added');
       fetchCategories();
       setNewCategory('');
     } catch (error) {
+      toast.error('Error saving category');
       console.error('Error saving category:', error);
     }
   };

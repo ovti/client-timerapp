@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const Timer = () => {
@@ -101,9 +102,11 @@ const Timer = () => {
           },
         }
       );
+      toast.success('Timer session saved');
       console.log(response);
       fetchSessionDataAndDuration();
     } catch (error) {
+      toast.error('Error saving timer session');
       console.error('Error saving timer session:', error);
     }
   };

@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Nav from './Nav';
 import Home from './Home';
 
@@ -27,6 +29,7 @@ function App() {
     localStorage.removeItem('userId');
     localStorage.removeItem('nickname');
     setLoggedIn(false);
+    toast.success('Logout successful');
     navigateTo('/');
   };
 
@@ -40,6 +43,14 @@ function App() {
         loggedIn={loggedIn}
         onLogout={handleLogout}
         handleLogin={handleLogin}
+      />
+      <ToastContainer
+        autoClose={2000}
+        limit={3}
+        draggable
+        draggablePercent={60}
+        closeButton={true}
+        position='top-right'
       />
       {!loggedIn && (
         <div className='flex items-center justify-center mb-3'>
