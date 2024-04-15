@@ -148,6 +148,7 @@ const Timer = ({ id, categories, fetchSessions }) => {
                 setCurrentTimer(0);
                 setProgress(0);
                 setRemainingTime(0);
+                setSelectedCategory(0);
               }}
             >
               Reset Timer

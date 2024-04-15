@@ -32,23 +32,6 @@ function App() {
     }
   }, [userId]);
 
-  // const fetchSessions = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:3000/sessions/${userId}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //         },
-  //       }
-  //     );
-  //     setSessions(response.data);
-  //     console.log('Sessions:', response.data);
-  //   } catch (error) {
-  //     console.error('Error fetching sessions:', error);
-  //   }
-  // };
-
   const fetchSessions = useCallback(async () => {
     try {
       const response = await axios.get(
