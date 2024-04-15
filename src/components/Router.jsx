@@ -4,7 +4,7 @@ import ErrorPage from './ErrorPage';
 import Register from './Register';
 import Login from './Login';
 import Categories from './Categories';
-// import Home from './Home';
+import Sessions from './Sessions';
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -25,10 +25,10 @@ const Router = () => {
           path: '/categories',
           element: <Categories />,
         },
-        // {
-        //   path: '/home',
-        //   element: <Home />,
-        // },
+        {
+          path: '/sessions',
+          element: <Sessions />,
+        },
       ],
     },
   ]);

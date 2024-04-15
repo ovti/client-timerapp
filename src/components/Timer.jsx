@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-const Timer = ({ id, categories }) => {
+const Timer = ({ id, categories, fetchSessions }) => {
   const [sessionCount, setSessionCount] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(5);
@@ -107,6 +107,7 @@ const Timer = ({ id, categories }) => {
       );
       toast.success('Timer session saved');
       console.log(response);
+      fetchSessions();
       fetchSessionDataAndDuration();
     } catch (error) {
       toast.error('Error saving timer session');
@@ -202,7 +203,7 @@ const Timer = ({ id, categories }) => {
         </div>
         <div className='bg-gray-800 p-4'>
           <h2 className='text-xl text-gray-200 font-semibold mb-2'>
-            Today&apos;s Session Data
+            Today&apos;s Sessions
           </h2>
           {sessionCount === 0 ? (
             <p className='text-gray-200 text-m'>No sessions today</p>
@@ -218,10 +219,10 @@ const Timer = ({ id, categories }) => {
           )}
           <div className='flex items-center justify-between align-middle mt-4'>
             <Link
-              // to='/stats'
+              to='/sessions'
               className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
             >
-              View all stats
+              View all sessions
             </Link>
             <Link
               to='/categories'
@@ -239,6 +240,7 @@ const Timer = ({ id, categories }) => {
 Timer.propTypes = {
   id: PropTypes.number.isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchSessions: PropTypes.func.isRequired,
 };
 
 export default Timer;

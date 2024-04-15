@@ -12,6 +12,7 @@ function App() {
   const [id, setId] = useState('');
   const [nickname, setNickname] = useState('');
   const [categories, setCategories] = useState([]);
+  const [sessions, setSessions] = useState([]);
   const userId = localStorage.getItem('userId');
   const navigateTo = useNavigate();
 
@@ -28,6 +29,40 @@ function App() {
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
+    }
+  }, [userId]);
+
+  // const fetchSessions = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:3000/sessions/${userId}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //         },
+  //       }
+  //     );
+  //     setSessions(response.data);
+  //     console.log('Sessions:', response.data);
+  //   } catch (error) {
+  //     console.error('Error fetching sessions:', error);
+  //   }
+  // };
+
+  const fetchSessions = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/sessions/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+      setSessions(response.data);
+      console.log('Sessions:', response.data);
+    } catch (error) {
+      console.error('Error fetching sessions:', error);
     }
   }, [userId]);
 
@@ -55,7 +90,8 @@ function App() {
   useEffect(() => {
     handleLogin();
     fetchCategories();
-  }, [handleLogin, fetchCategories]);
+    fetchSessions();
+  }, [handleLogin, fetchCategories, fetchSessions]);
 
   return (
     <>
@@ -90,9 +126,13 @@ function App() {
           handleLogin,
           categories,
           fetchCategories,
+          sessions,
+          fetchSessions,
         }}
       />
-      {loggedIn && <Home id={id} categories={categories} />}
+      {loggedIn && (
+        <Home id={id} categories={categories} fetchSessions={fetchSessions} />
+      )}
     </>
   );
 }
