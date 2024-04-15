@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import Nav from './Nav';
 import Home from './Home';
@@ -10,7 +11,25 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [id, setId] = useState('');
   const [nickname, setNickname] = useState('');
+  const [categories, setCategories] = useState([]);
+  const userId = localStorage.getItem('userId');
   const navigateTo = useNavigate();
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/category/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  }, [userId]);
 
   const handleLogin = useCallback(() => {
     const token = localStorage.getItem('token');
@@ -35,7 +54,8 @@ function App() {
 
   useEffect(() => {
     handleLogin();
-  }, [handleLogin]);
+    fetchCategories();
+  }, [handleLogin, fetchCategories]);
 
   return (
     <>
@@ -68,9 +88,11 @@ function App() {
           id,
           nickname,
           handleLogin,
+          categories,
+          fetchCategories,
         }}
       />
-      {loggedIn && <Home id={id} />}
+      {loggedIn && <Home id={id} categories={categories} />}
     </>
   );
 }

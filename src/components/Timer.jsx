@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-const Timer = () => {
+const Timer = ({ id, categories }) => {
   const [sessionCount, setSessionCount] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(5);
+  const [selectedCategory, setSelectedCategory] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [currentTimer, setCurrentTimer] = useState(0);
   const [timer, setTimer] = useState(null);
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
-  const userId = localStorage.getItem('userId');
+  const userId = id;
+  const userCategories = categories;
 
   const fetchSessionDataAndDuration = async () => {
     try {
@@ -94,7 +97,7 @@ const Timer = () => {
   const saveTimerSession = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}`,
+        `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}/${selectedCategory}`,
         null,
         {
           headers: {
@@ -179,6 +182,22 @@ const Timer = () => {
             value={selectedDuration}
             onChange={(e) => setSelectedDuration(Number(e.target.value))}
           />
+          <select
+            id='categorySelect'
+            className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
+            type='text'
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(Number(e.target.value))}
+          >
+            <option value='default'>
+              Select or create a category for this session
+            </option>
+            {userCategories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.category}
+              </option>
+            ))}
+          </select>
         </div>
         <div className='bg-gray-800 p-4'>
           <h2 className='text-xl text-gray-200 font-semibold mb-2'>
@@ -207,13 +226,18 @@ const Timer = () => {
               to='/categories'
               className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
             >
-              View all categories
+              View or add categories
             </Link>
           </div>
         </div>
       </div>
     </>
   );
+};
+
+Timer.propTypes = {
+  id: PropTypes.number.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default Timer;
