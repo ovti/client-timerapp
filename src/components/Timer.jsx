@@ -129,6 +129,7 @@ const Timer = ({ id, categories }) => {
               id='startPauseTimer'
               className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
               onClick={isTimerRunning ? pauseTimer : startTimer}
+              disabled={selectedCategory === 0}
             >
               {isTimerRunning
                 ? paused
