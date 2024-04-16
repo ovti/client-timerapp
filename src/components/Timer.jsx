@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import Task from './Task';
 
-const Timer = ({ id, categories, tasks, fetchSessions }) => {
+const Timer = ({ id, categories, tasks, fetchSessions, fetchTasks }) => {
   const [sessionCount, setSessionCount] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(5);
@@ -16,6 +16,7 @@ const Timer = ({ id, categories, tasks, fetchSessions }) => {
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
+  const [creatingTask, setCreatingTask] = useState(false);
   const userId = id;
   const userCategories = categories;
   const userTasks = tasks;
@@ -109,6 +110,7 @@ const Timer = ({ id, categories, tasks, fetchSessions }) => {
       );
       toast.success('Timer session saved');
       console.log(response);
+      fetchTasks();
       fetchSessions();
       fetchSessionDataAndDuration();
     } catch (error) {
@@ -117,10 +119,18 @@ const Timer = ({ id, categories, tasks, fetchSessions }) => {
     }
   };
 
+  const toggleTaskForm = () => {
+    setCreatingTask(!creatingTask);
+  };
+
   useEffect(() => {
     fetchSessionDataAndDuration();
     return () => clearInterval(timer);
   }, [userId, selectedDuration, timer, fetchSessions]);
+
+  useEffect(() => {
+    setCreatingTask(false);
+  }, [selectedTask]);
 
   return (
     <>
@@ -214,7 +224,7 @@ const Timer = ({ id, categories, tasks, fetchSessions }) => {
                 Sessions today: {sessionCount}
               </p>
               <p className='text-gray-200 text-m'>
-                Total duration today: {totalDuration} seconds
+                Total duration today: {totalDuration} minutes
               </p>
             </>
           )}
@@ -233,8 +243,29 @@ const Timer = ({ id, categories, tasks, fetchSessions }) => {
             </Link>
           </div>
         </div>
+        {!creatingTask && selectedTask === 0 && (
+          <div className='flex items-center justify-center align-middle mt-4'>
+            <button
+              id='createTaskButton'
+              className=' text-white font-bold text-xl px-20 py-10 rounded hover:bg-blue-600 border-dashed border-2 border-sky-500 opacity-70'
+              onClick={toggleTaskForm}
+            >
+              + Create Task
+            </button>
+          </div>
+        )}
       </div>
-      <Task userId={userId} userCategories={userCategories} />
+
+      <Task
+        userId={userId}
+        userCategories={userCategories}
+        userTasks={userTasks}
+        fetchTasks={fetchTasks}
+        selectedTask={selectedTask}
+        setSelectedTask={setSelectedTask}
+        creatingTask={creatingTask}
+        setCreatingTask={setCreatingTask}
+      />
     </>
   );
 };
@@ -244,6 +275,7 @@ Timer.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchSessions: PropTypes.func.isRequired,
+  fetchTasks: PropTypes.func.isRequired,
 };
 
 export default Timer;

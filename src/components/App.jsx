@@ -61,6 +61,7 @@ function App() {
         }
       );
       setTasks(response.data);
+      console.log('Tasks:', response.data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
@@ -139,6 +140,7 @@ function App() {
           categories={categories}
           tasks={tasks}
           fetchSessions={fetchSessions}
+          fetchTasks={fetchTasks}
         />
       )}
     </>
