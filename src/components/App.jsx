@@ -139,6 +139,7 @@ function App() {
           id={id}
           categories={categories}
           tasks={tasks}
+          fetchCategories={fetchCategories}
           fetchSessions={fetchSessions}
           fetchTasks={fetchTasks}
         />

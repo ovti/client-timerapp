@@ -5,7 +5,14 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import Task from './Task';
 
-const Timer = ({ id, categories, tasks, fetchSessions, fetchTasks }) => {
+const Timer = ({
+  id,
+  categories,
+  tasks,
+  fetchSessions,
+  fetchCategories,
+  fetchTasks,
+}) => {
   const [sessionCount, setSessionCount] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(5);
@@ -51,6 +58,13 @@ const Timer = ({ id, categories, tasks, fetchSessions, fetchTasks }) => {
   };
 
   const startTimer = () => {
+    if (
+      userTasks.find((task) => task.id === selectedTask).sessionCount ===
+      userTasks.find((task) => task.id === selectedTask).sessionsToComplete
+    ) {
+      toast.error('Task already completed');
+      return;
+    }
     setIsTimerRunning(true);
     const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
     setCurrentTimer(startTime);
@@ -255,17 +269,19 @@ const Timer = ({ id, categories, tasks, fetchSessions, fetchTasks }) => {
           </div>
         )}
       </div>
-
-      <Task
-        userId={userId}
-        userCategories={userCategories}
-        userTasks={userTasks}
-        fetchTasks={fetchTasks}
-        selectedTask={selectedTask}
-        setSelectedTask={setSelectedTask}
-        creatingTask={creatingTask}
-        setCreatingTask={setCreatingTask}
-      />
+      {creatingTask && (
+        <Task
+          userId={userId}
+          userCategories={userCategories}
+          fetchCategories={fetchCategories}
+          userTasks={userTasks}
+          fetchTasks={fetchTasks}
+          selectedTask={selectedTask}
+          setSelectedTask={setSelectedTask}
+          creatingTask={creatingTask}
+          setCreatingTask={setCreatingTask}
+        />
+      )}
     </>
   );
 };
@@ -274,6 +290,7 @@ Timer.propTypes = {
   id: PropTypes.number.isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchCategories: PropTypes.func.isRequired,
   fetchSessions: PropTypes.func.isRequired,
   fetchTasks: PropTypes.func.isRequired,
 };

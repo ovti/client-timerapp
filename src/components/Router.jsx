@@ -3,7 +3,7 @@ import App from './App';
 import ErrorPage from './ErrorPage';
 import Register from './Register';
 import Login from './Login';
-import Categories from './Categories';
+// import Categories from './Categories';
 import Sessions from './Sessions';
 
 const Router = () => {
@@ -21,10 +21,10 @@ const Router = () => {
           path: '/login',
           element: <Login />,
         },
-        {
-          path: '/categories',
-          element: <Categories />,
-        },
+        // {
+        //   path: '/categories',
+        //   element: <Categories />,
+        // },
         {
           path: '/sessions',
           element: <Sessions />,

@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Categories from './Categories';
 
 const Task = ({
   userId,
   userCategories,
+  fetchCategories,
   userTasks,
   fetchTasks,
   selectedTask,
@@ -17,6 +19,12 @@ const Task = ({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [sessionsToComplete, setSessionsToComplete] = useState(1);
+  const [creatingCategory, setCreatingCategory] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   const addTask = async () => {
     try {
@@ -32,6 +40,10 @@ const Task = ({
       toast.success('Task added');
       setCreatingTask(false);
       setSelectedTask(0);
+      setTitle('');
+      setDescription('');
+      setSessionsToComplete(1);
+      setSelectedCategory(0);
       fetchTasks();
     } catch (error) {
       toast.error('Error saving task');
@@ -40,7 +52,7 @@ const Task = ({
   };
 
   return (
-    <div className='w-1/4 mx-auto my-2'>
+    <div className={`w-1/4 mx-auto my-2 ${loaded ? 'pop-in' : ''}`}>
       {creatingTask ? (
         <div className='bg-gray-900 p-4 rounded-lg'>
           <button
@@ -63,20 +75,35 @@ const Task = ({
             onChange={(e) => setTitle(e.target.value)}
           />
           <p className='text-gray-200 mt-2'>Category</p>
-          <select
-            id='categorySelect'
-            className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
-            type='text'
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(Number(e.target.value))}
-          >
-            <option value='default'>Select category for this session</option>
-            {userCategories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.category}
-              </option>
-            ))}
-          </select>
+          <div className='flex-row items-center justify-between'>
+            <select
+              id='categorySelect'
+              className='bg-gray-800 text-white py-2 px-4 rounded mt-4 mr-2'
+              type='text'
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(Number(e.target.value))}
+            >
+              <option value='0'>Select category for this session</option>
+              {userCategories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.category}
+                </option>
+              ))}
+            </select>
+            <button
+              className='bg-blue-500 text-white py-1 px-3 font-bold rounded mt-2 hover:bg-blue-600'
+              onClick={() => setCreatingCategory(true)}
+            >
+              +
+            </button>
+          </div>
+          {creatingCategory && (
+            <Categories
+              setCreatingCategory={setCreatingCategory}
+              categories={userCategories}
+              fetchCategories={fetchCategories}
+            />
+          )}
           <p className='text-gray-200 mt-2'>Description</p>
           <textarea
             id='description'
@@ -153,6 +180,7 @@ Task.propTypes = {
     })
   ).isRequired,
   fetchTasks: PropTypes.func.isRequired,
+  fetchCategories: PropTypes.func.isRequired,
   userTasks: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,

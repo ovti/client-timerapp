@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
-const Categories = () => {
-  const { categories, fetchCategories } = useOutletContext();
+const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
   const [newCategory, setNewCategory] = useState('');
   const userId = localStorage.getItem('userId');
-  const navigateTo = useNavigate();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
 
   const addCategory = async () => {
     try {
@@ -21,6 +24,7 @@ const Categories = () => {
         }
       );
       toast.success('Category added');
+      setCreatingCategory(false);
       fetchCategories();
       setNewCategory('');
     } catch (error) {
@@ -45,62 +49,70 @@ const Categories = () => {
   };
 
   return (
-    <>
-      <div className='w-1/4 mx-auto mt-8'>
-        <div className='bg-gray-900 p-4 rounded-t-lg'>
-          <button
-            onClick={() => navigateTo('/')}
-            className='float-right text-white font-bold bg-red-500 p-2 rounded hover:bg-red-600'
-            style={{ width: '2.5rem', height: '2.5rem' }}
-          >
-            x
-          </button>
-          <div className='flex-column items-center justify-between mb-4 p-4'>
-            <h1 className='text-4xl font-bold'>Categories</h1>
-            <div className='flex-row mt-2'>
-              <input
-                type='text'
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                placeholder='New Category'
-                className='mr-2 p-2 rounded border border-gray-400 focus:outline-none focus:border-blue-500'
-              />
-              <button
-                className='text-white bg-blue-500 p-2 rounded mt-4'
-                onClick={addCategory}
-              >
-                Add Category
-              </button>
-            </div>
+    <div
+      className={`mx-auto bg-gray-800 rounded-lg m-4 p-4 ${
+        loaded ? 'pop-in' : ''
+      }`}
+    >
+      <button
+        onClick={() => setCreatingCategory(false)}
+        className='float-right text-white font-bold bg-red-500 p-2 rounded hover:bg-red-600'
+        style={{ width: '2.5rem', height: '2.5rem' }}
+      >
+        x
+      </button>
+      <div className=''>
+        <div className='flex-column items-center justify-between px-4'>
+          <h1 className='text-4xl font-bold'>Categories</h1>
+          <div className='flex-row mt-2'>
+            <input
+              type='text'
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+              placeholder='New Category'
+              className='mr-2 p-2 rounded border border-gray-400 focus:outline-none focus:border-blue-500'
+            />
+            <button
+              className='font-bold text-white bg-blue-500 px-4 py-2 rounded mt-4 hover:bg-blue-600'
+              onClick={addCategory}
+            >
+              +
+            </button>
           </div>
         </div>
-        <div className='bg-gray-800 p-4'>
-          <h2 className='text-4xl text-gray-200 font-semibold mb-2'>
-            Category List
-          </h2>
-          {categories.length === 0 && (
-            <p className='text-gray-200'>No categories found</p>
-          )}
-
-          <ul>
-            {categories.map((category) => (
-              <li key={category.id} className='flex-row items-center'>
-                <span className='text-gray-200 text-2xl mx-3'>
-                  {category.category}
-                </span>
-                <button
-                  onClick={() => deleteCategory(category.id)}
-                  className='font-bold hover:text-red-500'
-                >
-                  x
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
-    </>
+      <div className='px-4 py-2'>
+        <h2 className='text-xl text-gray-200 font-semibold mb-2'>
+          Your categories
+        </h2>
+        {categories.length === 0 && (
+          <p className='text-gray-200'>No categories found</p>
+        )}
+
+        <ul>
+          {categories.map((category) => (
+            <li key={category.id} className='flex-row items-center'>
+              <span className='text-gray-200 text-lg mx-3'>
+                {category.category}
+              </span>
+              <button
+                onClick={() => deleteCategory(category.id)}
+                className='font-bold hover:text-red-500'
+              >
+                x
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
+};
+
+Categories.propTypes = {
+  setCreatingCategory: PropTypes.func.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchCategories: PropTypes.func.isRequired,
 };
 
 export default Categories;
