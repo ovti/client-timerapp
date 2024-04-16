@@ -9,7 +9,7 @@ function Nav({ loggedIn, onLogout }) {
           <span className='font-semibold text-4xl tracking-tight'>
             <Link
               to='/'
-              className='block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4'
+              className='block font-bold mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4'
             >
               Timer App
             </Link>
@@ -38,7 +38,7 @@ function Nav({ loggedIn, onLogout }) {
             {loggedIn && (
               <button
                 onClick={onLogout}
-                className='inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal hover:bg-white mt-4 lg:mt-0'
+                className='inline-block text-xl font-bold px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-900 hover:bg-white mt-4 lg:mt-0'
               >
                 Logout
               </button>

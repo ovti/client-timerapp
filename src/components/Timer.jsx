@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import Task from './Task';
 
-const Timer = ({ id, categories, fetchSessions }) => {
+const Timer = ({ id, categories, tasks, fetchSessions }) => {
   const [sessionCount, setSessionCount] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(5);
-  const [selectedCategory, setSelectedCategory] = useState(0);
+  const [selectedTask, setSelectedTask] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [currentTimer, setCurrentTimer] = useState(0);
   const [timer, setTimer] = useState(null);
@@ -17,6 +18,7 @@ const Timer = ({ id, categories, fetchSessions }) => {
   const [remainingTime, setRemainingTime] = useState(0);
   const userId = id;
   const userCategories = categories;
+  const userTasks = tasks;
 
   const fetchSessionDataAndDuration = async () => {
     try {
@@ -97,7 +99,7 @@ const Timer = ({ id, categories, fetchSessions }) => {
   const saveTimerSession = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}/${selectedCategory}`,
+        `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}/${selectedTask}`,
         null,
         {
           headers: {
@@ -117,9 +119,8 @@ const Timer = ({ id, categories, fetchSessions }) => {
 
   useEffect(() => {
     fetchSessionDataAndDuration();
-
     return () => clearInterval(timer);
-  }, [userId, selectedDuration, timer]);
+  }, [userId, selectedDuration, timer, fetchSessions]);
 
   return (
     <>
@@ -130,7 +131,7 @@ const Timer = ({ id, categories, fetchSessions }) => {
               id='startPauseTimer'
               className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
               onClick={isTimerRunning ? pauseTimer : startTimer}
-              disabled={selectedCategory === 0}
+              disabled={selectedTask === 0}
             >
               {isTimerRunning
                 ? paused
@@ -138,6 +139,7 @@ const Timer = ({ id, categories, fetchSessions }) => {
                   : 'Pause Timer'
                 : 'Start Timer'}
             </button>
+            <h1 className='text-4xl font-bold'>Timer</h1>
             <button
               id='resetTimer'
               className='bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600'
@@ -148,16 +150,14 @@ const Timer = ({ id, categories, fetchSessions }) => {
                 setCurrentTimer(0);
                 setProgress(0);
                 setRemainingTime(0);
-                setSelectedCategory(0);
+                setSelectedTask(0);
               }}
             >
               Reset Timer
             </button>
           </div>
-          <div className='flex items-center justify-between mb-4'>
-            <p id='timerDisplay' className='text-xl font-semibold mb-4'>
-              Timer: {currentTimer} seconds
-            </p>
+          <div className='flex items-center justify-center mb-4'>
+            <p className='text-9xl font-semibold mb-4'>{currentTimer}</p>
           </div>
           <div className='relative h-4 bg-gray-700 rounded'>
             <div
@@ -172,9 +172,9 @@ const Timer = ({ id, categories, fetchSessions }) => {
             value={selectedDuration}
             onChange={(e) => setSelectedDuration(Number(e.target.value))}
           >
-            <option value='5'>5 seconds</option>
-            <option value='6'>6 seconds</option>
-            <option value='7'>7 seconds</option>
+            <option value='5'>5 minutes</option>
+            <option value='15'>15 minutes</option>
+            <option value='25'>25 minutes</option>
           </select>
 
           <input
@@ -186,20 +186,20 @@ const Timer = ({ id, categories, fetchSessions }) => {
             onChange={(e) => setSelectedDuration(Number(e.target.value))}
           />
           <select
-            id='categorySelect'
+            id='taskSelect'
             className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
             type='text'
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(Number(e.target.value))}
+            value={selectedTask}
+            onChange={(e) => setSelectedTask(Number(e.target.value))}
           >
-            <option value='default'>
-              Select or create a category for this session
-            </option>
-            {userCategories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.category}
-              </option>
-            ))}
+            <option value='0'>Select task for this session</option>
+            {userTasks
+              .filter((task) => task.status === 'pending')
+              .map((task) => (
+                <option key={task.id} value={task.id}>
+                  {task.title}
+                </option>
+              ))}
           </select>
         </div>
         <div className='bg-gray-800 p-4'>
@@ -234,6 +234,7 @@ const Timer = ({ id, categories, fetchSessions }) => {
           </div>
         </div>
       </div>
+      <Task userId={userId} userCategories={userCategories} />
     </>
   );
 };
@@ -241,6 +242,7 @@ const Timer = ({ id, categories, fetchSessions }) => {
 Timer.propTypes = {
   id: PropTypes.number.isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchSessions: PropTypes.func.isRequired,
 };
 

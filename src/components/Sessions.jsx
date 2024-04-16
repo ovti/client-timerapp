@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const Sessions = () => {
-  const { sessions, fetchSessions } = useOutletContext();
+  const { sessions, fetchSessions, fetchCategories } = useOutletContext();
   const navigateTo = useNavigate();
 
   const sessionsByCategory = sessions.reduce((acc, session) => {
@@ -34,6 +34,7 @@ const Sessions = () => {
       });
       toast.success('Session deleted');
       fetchSessions();
+      fetchCategories();
     } catch (error) {
       toast.error('Error deleting session');
       console.error('Error deleting session:', error);

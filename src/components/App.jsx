@@ -13,6 +13,7 @@ function App() {
   const [nickname, setNickname] = useState('');
   const [categories, setCategories] = useState([]);
   const [sessions, setSessions] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const userId = localStorage.getItem('userId');
   const navigateTo = useNavigate();
 
@@ -49,6 +50,22 @@ function App() {
     }
   }, [userId]);
 
+  const fetchTasks = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/tasks/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+      setTasks(response.data);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  }, [userId]);
+
   const handleLogin = useCallback(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -74,7 +91,8 @@ function App() {
     handleLogin();
     fetchCategories();
     fetchSessions();
-  }, [handleLogin, fetchCategories, fetchSessions]);
+    fetchTasks();
+  }, [handleLogin, fetchCategories, fetchSessions, fetchTasks]);
 
   return (
     <>
@@ -111,10 +129,17 @@ function App() {
           fetchCategories,
           sessions,
           fetchSessions,
+          tasks,
+          fetchTasks,
         }}
       />
       {loggedIn && (
-        <Home id={id} categories={categories} fetchSessions={fetchSessions} />
+        <Home
+          id={id}
+          categories={categories}
+          tasks={tasks}
+          fetchSessions={fetchSessions}
+        />
       )}
     </>
   );
