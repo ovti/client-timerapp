@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -28,7 +28,36 @@ const Timer = ({
   const userCategories = categories;
   const userTasks = tasks;
 
-  const fetchSessionDataAndDuration = async () => {
+  // const fetchSessionDataAndDuration = async () => {
+  //   try {
+  //     const sessionResponse = await axios.get(
+  //       `http://localhost:3000/sessionCountToday/${userId}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //         },
+  //       }
+  //     );
+  //     const sessionData = sessionResponse.data;
+
+  //     const durationResponse = await axios.get(
+  //       `http://localhost:3000/totalDurationToday/${userId}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //         },
+  //       }
+  //     );
+  //     const durationData = durationResponse.data;
+
+  //     setSessionCount(sessionData.sessionCount);
+  //     setTotalDuration(durationData.totalDuration);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
+
+  const fetchSessionDataAndDuration = useCallback(async () => {
     try {
       const sessionResponse = await axios.get(
         `http://localhost:3000/sessionCountToday/${userId}`,
@@ -55,7 +84,36 @@ const Timer = ({
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+  }, [userId]);
+
+  const saveTimerSession = useCallback(async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}/${selectedTask}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+      toast.success('Timer session saved');
+      console.log(response);
+      fetchTasks();
+      fetchSessions();
+      fetchSessionDataAndDuration();
+    } catch (error) {
+      toast.error('Error saving timer session');
+      console.error('Error saving timer session:', error);
+    }
+  }, [
+    userId,
+    selectedDuration,
+    selectedTask,
+    fetchSessions,
+    fetchSessionDataAndDuration,
+    fetchTasks,
+  ]);
 
   const startTimer = () => {
     if (
@@ -98,7 +156,7 @@ const Timer = ({
       saveTimerSession();
       setTimer(null);
     }
-  }, [isTimerRunning, currentTimer, timer]);
+  }, [isTimerRunning, currentTimer, timer, saveTimerSession]);
 
   const pauseTimer = () => {
     if (paused) {
@@ -111,27 +169,27 @@ const Timer = ({
     }
   };
 
-  const saveTimerSession = async () => {
-    try {
-      const response = await axios.post(
-        `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}/${selectedTask}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      );
-      toast.success('Timer session saved');
-      console.log(response);
-      fetchTasks();
-      fetchSessions();
-      fetchSessionDataAndDuration();
-    } catch (error) {
-      toast.error('Error saving timer session');
-      console.error('Error saving timer session:', error);
-    }
-  };
+  // const saveTimerSession = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}/${selectedTask}`,
+  //       null,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //         },
+  //       }
+  //     );
+  //     toast.success('Timer session saved');
+  //     console.log(response);
+  //     fetchTasks();
+  //     fetchSessions();
+  //     fetchSessionDataAndDuration();
+  //   } catch (error) {
+  //     toast.error('Error saving timer session');
+  //     console.error('Error saving timer session:', error);
+  //   }
+  // };
 
   const toggleTaskForm = () => {
     setCreatingTask(!creatingTask);
@@ -140,7 +198,14 @@ const Timer = ({
   useEffect(() => {
     fetchSessionDataAndDuration();
     return () => clearInterval(timer);
-  }, [userId, selectedDuration, timer, fetchSessions]);
+  }, [
+    userId,
+    selectedDuration,
+    selectedTask,
+    timer,
+    fetchSessions,
+    fetchSessionDataAndDuration,
+  ]);
 
   useEffect(() => {
     setCreatingTask(false);
@@ -249,12 +314,6 @@ const Timer = ({
             >
               View all sessions
             </Link>
-            <Link
-              to='/categories'
-              className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
-            >
-              View or add categories
-            </Link>
           </div>
         </div>
         {!creatingTask && selectedTask === 0 && (
@@ -269,19 +328,17 @@ const Timer = ({
           </div>
         )}
       </div>
-      {creatingTask && (
-        <Task
-          userId={userId}
-          userCategories={userCategories}
-          fetchCategories={fetchCategories}
-          userTasks={userTasks}
-          fetchTasks={fetchTasks}
-          selectedTask={selectedTask}
-          setSelectedTask={setSelectedTask}
-          creatingTask={creatingTask}
-          setCreatingTask={setCreatingTask}
-        />
-      )}
+      <Task
+        userId={userId}
+        userCategories={userCategories}
+        fetchCategories={fetchCategories}
+        userTasks={userTasks}
+        fetchTasks={fetchTasks}
+        selectedTask={selectedTask}
+        setSelectedTask={setSelectedTask}
+        creatingTask={creatingTask}
+        setCreatingTask={setCreatingTask}
+      />
     </>
   );
 };

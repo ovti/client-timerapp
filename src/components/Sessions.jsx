@@ -3,14 +3,15 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const Sessions = () => {
-  const { sessions, fetchSessions, fetchCategories } = useOutletContext();
+  const { sessions, fetchSessions, fetchCategories, fetchTasks } =
+    useOutletContext();
   const navigateTo = useNavigate();
 
   const sessionsByCategory = sessions.reduce((acc, session) => {
-    if (!acc[session.Category.category]) {
-      acc[session.Category.category] = [];
+    if (!acc[session.Task.Category.category]) {
+      acc[session.Task.Category.category] = [];
     }
-    acc[session.Category.category].push(session);
+    acc[session.Task.Category.category].push(session);
     return acc;
   }, {});
 
@@ -33,6 +34,7 @@ const Sessions = () => {
         },
       });
       toast.success('Session deleted');
+      fetchTasks();
       fetchSessions();
       fetchCategories();
     } catch (error) {
@@ -71,8 +73,9 @@ const Sessions = () => {
               <ul>
                 {sessionsByCategory[category].map((session) => (
                   <li key={session.id} className='text-gray-200'>
-                    {formatDateTime(session.createdAt)} session - lasted{' '}
-                    {session.timeInSeconds} minutes
+                    {formatDateTime(session.createdAt)} session -{' '}
+                    {session.Task.title} - {session.timeInSeconds}{' '}
+                    {session.timeInSeconds === 1 ? 'minute' : 'minutes'}
                     <button
                       onClick={() => deleteSession(session.id)}
                       className=' text-white font-bold hover:text-red-500'
