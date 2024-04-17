@@ -4,13 +4,10 @@ import PropTypes from "prop-types";
 function Nav({ loggedIn, onLogout }) {
   return (
     <>
-      <nav className="flex w-full flex-wrap items-center justify-center bg-gray-900 p-3 md:mx-auto md:w-3/4 md:p-4 lg:mx-auto lg:w-1/2 lg:justify-between lg:p-6">
-        <div className="flex flex-shrink-0 text-white">
+      <nav className="border-fire-brick mx-auto flex w-11/12  flex-wrap items-center justify-center border-b-2 p-3 md:mx-auto md:w-3/4 md:border-b-4 md:p-4 lg:mx-auto lg:w-1/2 lg:justify-between lg:p-6">
+        <div className="flex flex-shrink-0 ">
           <span className="text-5xl font-semibold tracking-tight">
-            <Link
-              to="/"
-              className=" block font-bold text-white hover:text-white lg:mt-0 lg:inline-block"
-            >
+            <Link to="/" className=" block font-bold   lg:mt-0 lg:inline-block">
               Timer App
             </Link>
           </span>
@@ -21,13 +18,13 @@ function Nav({ loggedIn, onLogout }) {
               <div className="flex justify-center text-2xl md:justify-end">
                 <Link
                   to="/login"
-                  className="mr-4 mt-4 block text-white hover:text-white lg:mt-0 lg:inline-block"
+                  className="mr-4 mt-4 block   lg:mt-0 lg:inline-block"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="mr-4 mt-4 block text-white hover:text-white lg:mt-0 lg:inline-block"
+                  className="mr-4 mt-4 block   lg:mt-0 lg:inline-block"
                 >
                   Register
                 </Link>
@@ -38,7 +35,7 @@ function Nav({ loggedIn, onLogout }) {
             {loggedIn && (
               <button
                 onClick={onLogout}
-                className=" mt-4 inline-block rounded border border-white px-4 py-2 text-xl font-bold leading-none text-white hover:border-transparent hover:bg-white hover:text-gray-900"
+                className=" mt-4 inline-block rounded border-2 border-rose-700  px-4 py-2 text-xl font-bold leading-none  hover:border-transparent  "
               >
                 Logout
               </button>

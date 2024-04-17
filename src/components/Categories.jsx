@@ -50,13 +50,11 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
 
   return (
     <div
-      className={`m-4 mx-auto rounded-lg bg-gray-800 p-4 ${
-        loaded ? "pop-in" : ""
-      }`}
+      className={`0 border-fire-brick m-4 mx-auto rounded-lg border-2 p-4 ${loaded ? "pop-in" : ""}`}
     >
       <button
         onClick={() => setCreatingCategory(false)}
-        className="float-right rounded bg-red-500 p-2 font-bold text-white hover:bg-red-600"
+        className="bg-fire-brick float-right rounded p-2 font-bold text-white hover:bg-red-600"
         style={{ width: "2.5rem", height: "2.5rem" }}
       >
         x
@@ -70,10 +68,10 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
               placeholder="New Category"
-              className="mr-2 rounded border border-gray-400 p-2 focus:border-blue-500 focus:outline-none"
+              className="mr-2 rounded border  p-2  focus:outline-none"
             />
             <button
-              className="mt-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600"
+              className="bg-fire-brick mt-4 rounded px-4 py-2 font-bold text-white hover:bg-blue-600"
               onClick={addCategory}
             >
               +
@@ -82,19 +80,13 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
         </div>
       </div>
       <div className="px-4 py-2">
-        <h2 className="mb-2 text-xl font-semibold text-gray-200">
-          Your categories
-        </h2>
-        {categories.length === 0 && (
-          <p className="text-gray-200">No categories found</p>
-        )}
+        <h2 className="mb-2 text-xl font-semibold ">Your categories</h2>
+        {categories.length === 0 && <p className="">No categories found</p>}
 
         <ul>
           {categories.map((category) => (
             <li key={category.id} className="flex-row items-center">
-              <span className="mx-3 text-lg text-gray-200">
-                {category.category}
-              </span>
+              <span className="mx-3 text-lg ">{category.category}</span>
               <button
                 onClick={() => deleteCategory(category.id)}
                 className="font-bold hover:text-red-500"

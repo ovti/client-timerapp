@@ -53,34 +53,32 @@ const Task = ({
 
   return (
     <div
-      className={`m-2 md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4 ${loaded ? "pop-in" : ""}`}
+      className={`border-fire-brick m-2 rounded border md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4 ${loaded ? "pop-in" : ""}`}
     >
       {creatingTask ? (
-        <div className="rounded-lg bg-gray-900 p-4">
+        <div className="rounded-lg  p-4">
           <button
             onClick={() => setCreatingTask(false)}
-            className="float-right rounded bg-red-500 p-2 font-bold text-white hover:bg-red-600"
+            className="bg-fire-brick float-right rounded p-2 font-bold  hover:bg-red-600"
             style={{ width: "2.5rem", height: "2.5rem" }}
           >
             x
           </button>
-          <h2 className="mb-4 text-4xl font-semibold text-white">
-            Create Task
-          </h2>
-          <p className="text-gray-200">Title</p>
+          <h2 className="mb-4 text-4xl font-semibold ">Create Task</h2>
+          <p className="">Title</p>
           <input
             id="title"
-            className="mt-2 w-full rounded bg-gray-800 px-4 py-2 text-white"
+            className="mt-2 w-full rounded  px-4 py-2 "
             type="text"
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <p className="mt-2 text-gray-200">Category</p>
+          <p className="mt-2 ">Category</p>
           <div className="flex-row items-center justify-between">
             <select
               id="categorySelect"
-              className="mr-2 mt-4 rounded bg-gray-800 px-4 py-2 text-white"
+              className="mr-2 mt-4 rounded px-2 py-2 "
               type="text"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(Number(e.target.value))}
@@ -93,7 +91,7 @@ const Task = ({
               ))}
             </select>
             <button
-              className="mt-2 rounded bg-blue-500 px-3 py-1 font-bold text-white hover:bg-blue-600"
+              className="bg-fire-brick mt-2 rounded px-3 py-1 font-bold  hover:bg-red-600"
               onClick={() => setCreatingCategory(true)}
             >
               +
@@ -106,19 +104,19 @@ const Task = ({
               fetchCategories={fetchCategories}
             />
           )}
-          <p className="mt-2 text-gray-200">Description</p>
+          <p className="mt-2 ">Description</p>
           <textarea
             id="description"
             maxLength="64"
-            className="mt-2 w-full resize-none rounded bg-gray-800 px-4 py-2 text-white"
+            className="mt-2 w-full resize-none rounded  px-4 py-2 "
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
-          <p className="mt-2 text-gray-200">Sessions needed to complete task</p>
+          <p className="mt-2 ">Sessions needed to complete task</p>
           <input
             id="sessionsNeeded"
-            className="mt-2 w-full rounded bg-gray-800 px-4 py-2 text-white"
+            className="mt-2 w-full rounded px-4 py-2 "
             type="number"
             placeholder="Sessions needed"
             value={sessionsToComplete}
@@ -126,7 +124,7 @@ const Task = ({
           />
           <button
             id="createTaskButton"
-            className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            className="bg-fire-brick mt-4 rounded px-4 py-2  hover:bg-red-600"
             onClick={addTask}
           >
             Create Task
@@ -134,32 +132,30 @@ const Task = ({
         </div>
       ) : (
         selectedTask !== 0 && (
-          <div className="bg-gray-800 p-4">
+          <div className=" p-4">
             <button
               onClick={() => setSelectedTask(0)}
-              className="float-right rounded bg-red-500 p-2 font-bold text-white hover:bg-red-600"
+              className="bg-fire-brick float-right rounded p-2 font-bold  hover:bg-red-600"
               style={{ width: "2.5rem", height: "2.5rem" }}
             >
               x
             </button>
-            <h2 className="mb-2 text-xl font-semibold text-gray-200">
-              Current Task
-            </h2>
-            <p className="text-m text-gray-200">
+            <h2 className="mb-2 text-xl font-semibold ">Current Task</h2>
+            <p className="text-m ">
               Task: {userTasks.find((task) => task.id === selectedTask).title}
             </p>
-            <p className="text-m text-gray-200">
+            <p className="text-m ">
               Category:{" "}
               {
                 userTasks.find((task) => task.id === selectedTask).Category
                   .category
               }
             </p>
-            <p className="text-m text-gray-200">
+            <p className="text-m ">
               Description:{" "}
               {userTasks.find((task) => task.id === selectedTask).description}
             </p>
-            <p className="text-m text-gray-200">
+            <p className="text-m ">
               Sessions to complete:{" "}
               {userTasks.find((task) => task.id === selectedTask).sessionCount}/
               {

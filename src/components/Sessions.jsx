@@ -45,40 +45,36 @@ const Sessions = () => {
 
   return (
     <>
-      <div className="m-2 md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
-        <div className="rounded-t-lg bg-gray-900 p-4">
+      <div className="border-fire-brick m-2 rounded border md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
+        <div className=" bg-red-500 p-4">
           <button
             onClick={() => navigateTo("/")}
-            className="float-right rounded bg-red-500 p-2 font-bold text-white hover:bg-red-600"
+            className="bg-fire-brick float-right rounded p-2 font-bold text-white hover:bg-red-600"
             style={{ width: "2.5rem", height: "2.5rem" }}
           >
             x
           </button>
           <div className="flex-column mb-4 items-center justify-between p-4">
-            <h1 className="text-4xl font-bold">Sessions</h1>
+            <h1 className="text-4xl font-bold text-white">Sessions</h1>
           </div>
         </div>
-        <div className="bg-gray-800 p-4">
-          <h2 className="mb-2 text-4xl font-semibold text-gray-200">
-            Session List
-          </h2>
+        <div className=" p-4">
+          <h2 className="mb-2 text-4xl font-semibold ">Session List</h2>
           {Object.keys(sessionsByCategory).length === 0 && (
             <p className="text-gray-200">No sessions found</p>
           )}
           {Object.keys(sessionsByCategory).map((category) => (
             <div key={category}>
-              <h3 className="mb-2 text-xl font-semibold text-gray-300">
-                {category}
-              </h3>
+              <h3 className="mb-2 text-xl font-semibold ">{category}</h3>
               <ul>
                 {sessionsByCategory[category].map((session) => (
-                  <li key={session.id} className="text-gray-200">
+                  <li key={session.id} className="">
                     {formatDateTime(session.createdAt)} session -{" "}
                     {session.Task.title} - {session.timeInSeconds}{" "}
                     {session.timeInSeconds === 1 ? "minute" : "minutes"}
                     <button
                       onClick={() => deleteSession(session.id)}
-                      className=" font-bold text-white hover:text-red-500"
+                      className=" font-bold  hover:text-red-500"
                       style={{ width: "1.5rem", height: "1.5rem" }}
                     >
                       x

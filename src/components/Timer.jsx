@@ -162,12 +162,12 @@ const Timer = ({
 
   return (
     <>
-      <div className="m-2 md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
-        <div className="rounded-t-lg bg-gray-900 p-2 md:p-4">
+      <div className="border-fire-brick mx-2 mt-4 rounded border-2  md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
+        <div className="rounded-t-lg p-2 md:p-4">
           <div className="mb-4 flex items-center justify-between p-4">
             <button
               id="startPauseTimer"
-              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              className="border-fire-brick rounded border px-4 py-2 font-bold "
               onClick={isTimerRunning ? pauseTimer : startTimer}
               disabled={selectedTask === 0}
             >
@@ -177,10 +177,9 @@ const Timer = ({
                   : "Pause Timer"
                 : "Start Timer"}
             </button>
-            <h1 className="text-4xl font-bold">Timer</h1>
             <button
               id="resetTimer"
-              className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+              className="border-fire-brick rounded border px-4 py-2 font-bold "
               onClick={() => {
                 clearInterval(timer);
                 setTimer(null);
@@ -189,6 +188,7 @@ const Timer = ({
                 setProgress(0);
                 setRemainingTime(0);
                 setSelectedTask(0);
+                toast.success("Timer has been reset");
               }}
             >
               Reset Timer
@@ -197,16 +197,16 @@ const Timer = ({
           <div className="mb-4 flex items-center justify-center">
             <p className="mb-4 text-9xl font-semibold">{currentTimer}</p>
           </div>
-          <div className="relative h-4 rounded bg-gray-700">
+          <div className="relative h-4 rounded border border-gray-800 bg-white">
             <div
               id="progressBar"
-              className="h-full rounded bg-blue-500"
+              className="h-full rounded bg-red-500"
               style={{ width: `${progress}%`, transition: "width 1s linear" }}
             ></div>
           </div>
           <select
             id="timerDuration"
-            className="mt-4 w-full rounded bg-gray-800 px-4 py-2 text-white"
+            className="mt-4 w-full rounded  px-4 py-2 "
             value={selectedDuration}
             onChange={(e) => setSelectedDuration(Number(e.target.value))}
           >
@@ -217,7 +217,7 @@ const Timer = ({
 
           <input
             id="customDuration"
-            className="mt-4 w-full rounded bg-gray-800 px-4 py-2 text-white"
+            className="0 mt-4 w-full rounded px-4 py-2 "
             type="text"
             placeholder="Custom duration in seconds"
             value={selectedDuration}
@@ -225,7 +225,7 @@ const Timer = ({
           />
           <select
             id="taskSelect"
-            className="mt-4 w-full rounded bg-gray-800 px-4 py-2 text-white"
+            className="mt-4 w-full rounded  px-4 py-2 "
             type="text"
             value={selectedTask}
             onChange={(e) => setSelectedTask(Number(e.target.value))}
@@ -240,7 +240,7 @@ const Timer = ({
               ))}
           </select>
         </div>
-        <div className="bg-gray-800 p-4">
+        <div className="bg-red-500 p-4">
           <h2 className="mb-2 text-xl font-semibold text-gray-200">
             Today&apos;s Sessions
           </h2>
@@ -259,24 +259,24 @@ const Timer = ({
           <div className="mt-4 flex items-center justify-between align-middle">
             <Link
               to="/sessions"
-              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+              className="bg-fire-brick rounded px-4 py-2 text-white hover:bg-red-600"
             >
               View all sessions
             </Link>
           </div>
         </div>
-        {!creatingTask && selectedTask === 0 && (
-          <div className="mt-4 flex items-center justify-center align-middle">
-            <button
-              id="createTaskButton"
-              className=" rounded border-2 border-dashed border-sky-500 px-20 py-10 text-xl font-bold text-white opacity-70 hover:bg-blue-600"
-              onClick={toggleTaskForm}
-            >
-              + Create Task
-            </button>
-          </div>
-        )}
       </div>
+      {!creatingTask && selectedTask === 0 && (
+        <div className="mt-4 flex items-center justify-center align-middle">
+          <button
+            id="createTaskButton"
+            className=" rounded border-2 border-dashed border-red-500 px-20 py-10 text-xl font-bold  opacity-70 hover:bg-red-600"
+            onClick={toggleTaskForm}
+          >
+            + Create Task
+          </button>
+        </div>
+      )}
       <Task
         userId={userId}
         userCategories={userCategories}
