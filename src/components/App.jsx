@@ -1,20 +1,20 @@
-import { useState, useEffect, useCallback } from 'react';
-import { jwtDecode } from 'jwt-decode';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import axios from 'axios';
-import 'react-toastify/dist/ReactToastify.css';
-import Nav from './Nav';
-import Home from './Home';
+import { useState, useEffect, useCallback } from "react";
+import { jwtDecode } from "jwt-decode";
+import { Outlet, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
+import Nav from "./Nav";
+import Home from "./Home";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [id, setId] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [id, setId] = useState("");
+  const [nickname, setNickname] = useState("");
   const [categories, setCategories] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
   const navigateTo = useNavigate();
 
   const fetchCategories = useCallback(async () => {
@@ -23,13 +23,13 @@ function App() {
         `http://localhost:3000/category/${userId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setCategories(response.data);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   }, [userId]);
 
@@ -39,14 +39,14 @@ function App() {
         `http://localhost:3000/sessions/${userId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setSessions(response.data);
-      console.log('Sessions:', response.data);
+      console.log("Sessions:", response.data);
     } catch (error) {
-      console.error('Error fetching sessions:', error);
+      console.error("Error fetching sessions:", error);
     }
   }, [userId]);
 
@@ -56,19 +56,19 @@ function App() {
         `http://localhost:3000/tasks/${userId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       setTasks(response.data);
-      console.log('Tasks:', response.data);
+      console.log("Tasks:", response.data);
     } catch (error) {
-      console.error('Error fetching tasks:', error);
+      console.error("Error fetching tasks:", error);
     }
   }, [userId]);
 
   const handleLogin = useCallback(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp * 1000 > Date.now()) {
@@ -80,12 +80,12 @@ function App() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('nickname');
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("nickname");
     setLoggedIn(false);
-    toast.success('Logout successful');
-    navigateTo('/');
+    toast.success("Logout successful");
+    navigateTo("/");
   };
 
   useEffect(() => {
@@ -108,13 +108,15 @@ function App() {
         draggable
         draggablePercent={60}
         closeButton={true}
-        position='top-right'
+        position="top-right"
       />
       {!loggedIn && (
-        <div className='flex items-center justify-center mb-3'>
-          <div className='grid grid-cols-1 gap-6'>
-            <h1 className='text-9xl font-bold text-center'>Timer App</h1>
-            <p className='text-center text-4xl'>
+        <div className="my-9 flex items-center justify-center">
+          <div className="grid grid-cols-1 gap-6">
+            {/* <h1 className="invisible text-center text-4xl font-bold md:visible md:text-9xl">
+              Timer App
+            </h1> */}
+            <p className="text-center text-xl font-semibold md:text-4xl">
               Please login or register to continue
             </p>
           </div>

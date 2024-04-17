@@ -1,70 +1,70 @@
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const navigateTo = useNavigate();
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/signup', {
+      const response = await axios.post("http://localhost:3000/signup", {
         username,
         password,
         confirmPassword,
       });
       if (response.status === 400) {
-        toast.error('User already exists');
-        setError('User already exists');
+        toast.error("User already exists");
+        setError("User already exists");
       } else if (response.status === 401) {
-        toast.error('Passwords do not match');
-        setError('Passwords do not match');
+        toast.error("Passwords do not match");
+        setError("Passwords do not match");
       } else {
-        toast.success('Registration successful');
-        navigateTo('/login');
+        toast.success("Registration successful");
+        navigateTo("/login");
       }
     } catch (err) {
-      toast.error('Registration failed');
+      toast.error("Registration failed");
       console.error(err);
     }
   };
 
   return (
-    <div className='flex items-center justify-center'>
-      <div className='grid grid-cols-1 gap-6'>
-        <h1 className='text-4xl font-bold text-center'>Register</h1>
+    <div className="flex items-center justify-center">
+      <div className="grid grid-cols-1 gap-6">
+        <h1 className="text-center text-4xl font-bold">Register</h1>
         <input
-          type='text'
-          placeholder='Username'
+          type="text"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className='p-2 border border-gray-300 rounded'
+          className="rounded border border-gray-300 p-2"
         />
         <input
-          type='password'
-          placeholder='Password'
+          type="password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className='p-2 border border-gray-300 rounded'
+          className="rounded border border-gray-300 p-2"
         />
         <input
-          type='password'
-          placeholder='Confirm Password'
+          type="password"
+          placeholder="Confirm Password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          className='p-2 border border-gray-300 rounded'
+          className="rounded border border-gray-300 p-2"
         />
         <button
           onClick={handleSubmit}
-          className='p-2 bg-blue-500 text-white rounded'
+          className="rounded bg-blue-500 p-2 text-white"
         >
           Register
         </button>
-        {error && <p className='text-red-500'>{error}</p>}
+        {error && <p className="text-red-500">{error}</p>}
       </div>
     </div>
   );

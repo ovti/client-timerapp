@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import Timer from './Timer';
+import PropTypes from "prop-types";
+import Timer from "./Timer";
 
 const Home = ({
   id,

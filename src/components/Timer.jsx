@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import Task from './Task';
+import { useState, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import Task from "./Task";
 
 const Timer = ({
   id,
@@ -28,44 +28,15 @@ const Timer = ({
   const userCategories = categories;
   const userTasks = tasks;
 
-  // const fetchSessionDataAndDuration = async () => {
-  //   try {
-  //     const sessionResponse = await axios.get(
-  //       `http://localhost:3000/sessionCountToday/${userId}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //         },
-  //       }
-  //     );
-  //     const sessionData = sessionResponse.data;
-
-  //     const durationResponse = await axios.get(
-  //       `http://localhost:3000/totalDurationToday/${userId}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //         },
-  //       }
-  //     );
-  //     const durationData = durationResponse.data;
-
-  //     setSessionCount(sessionData.sessionCount);
-  //     setTotalDuration(durationData.totalDuration);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
-
   const fetchSessionDataAndDuration = useCallback(async () => {
     try {
       const sessionResponse = await axios.get(
         `http://localhost:3000/sessionCountToday/${userId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       const sessionData = sessionResponse.data;
 
@@ -73,16 +44,16 @@ const Timer = ({
         `http://localhost:3000/totalDurationToday/${userId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       const durationData = durationResponse.data;
 
       setSessionCount(sessionData.sessionCount);
       setTotalDuration(durationData.totalDuration);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   }, [userId]);
 
@@ -93,18 +64,18 @@ const Timer = ({
         null,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
-      toast.success('Timer session saved');
+      toast.success("Timer session saved");
       console.log(response);
       fetchTasks();
       fetchSessions();
       fetchSessionDataAndDuration();
     } catch (error) {
-      toast.error('Error saving timer session');
-      console.error('Error saving timer session:', error);
+      toast.error("Error saving timer session");
+      console.error("Error saving timer session:", error);
     }
   }, [
     userId,
@@ -120,7 +91,7 @@ const Timer = ({
       userTasks.find((task) => task.id === selectedTask).sessionCount ===
       userTasks.find((task) => task.id === selectedTask).sessionsToComplete
     ) {
-      toast.error('Task already completed');
+      toast.error("Task already completed");
       return;
     }
     setIsTimerRunning(true);
@@ -147,7 +118,7 @@ const Timer = ({
           const newProgress = prev + 100 / startTime;
           return newProgress > 100 ? 100 : newProgress;
         });
-      }, 1000)
+      }, 1000),
     );
   };
 
@@ -168,28 +139,6 @@ const Timer = ({
       setRemainingTime(currentTimer);
     }
   };
-
-  // const saveTimerSession = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}/${selectedTask}`,
-  //       null,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //         },
-  //       }
-  //     );
-  //     toast.success('Timer session saved');
-  //     console.log(response);
-  //     fetchTasks();
-  //     fetchSessions();
-  //     fetchSessionDataAndDuration();
-  //   } catch (error) {
-  //     toast.error('Error saving timer session');
-  //     console.error('Error saving timer session:', error);
-  //   }
-  // };
 
   const toggleTaskForm = () => {
     setCreatingTask(!creatingTask);
@@ -213,25 +162,25 @@ const Timer = ({
 
   return (
     <>
-      <div className='w-1/4 mx-auto mt-8'>
-        <div className='bg-gray-900 p-4 rounded-t-lg'>
-          <div className='flex items-center justify-between mb-4 p-4'>
+      <div className="m-2 md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
+        <div className="rounded-t-lg bg-gray-900 p-2 md:p-4">
+          <div className="mb-4 flex items-center justify-between p-4">
             <button
-              id='startPauseTimer'
-              className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
+              id="startPauseTimer"
+              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
               onClick={isTimerRunning ? pauseTimer : startTimer}
               disabled={selectedTask === 0}
             >
               {isTimerRunning
                 ? paused
-                  ? 'Resume Timer'
-                  : 'Pause Timer'
-                : 'Start Timer'}
+                  ? "Resume Timer"
+                  : "Pause Timer"
+                : "Start Timer"}
             </button>
-            <h1 className='text-4xl font-bold'>Timer</h1>
+            <h1 className="text-4xl font-bold">Timer</h1>
             <button
-              id='resetTimer'
-              className='bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600'
+              id="resetTimer"
+              className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
               onClick={() => {
                 clearInterval(timer);
                 setTimer(null);
@@ -245,45 +194,45 @@ const Timer = ({
               Reset Timer
             </button>
           </div>
-          <div className='flex items-center justify-center mb-4'>
-            <p className='text-9xl font-semibold mb-4'>{currentTimer}</p>
+          <div className="mb-4 flex items-center justify-center">
+            <p className="mb-4 text-9xl font-semibold">{currentTimer}</p>
           </div>
-          <div className='relative h-4 bg-gray-700 rounded'>
+          <div className="relative h-4 rounded bg-gray-700">
             <div
-              id='progressBar'
-              className='h-full bg-blue-500 rounded'
-              style={{ width: `${progress}%`, transition: 'width 1s linear' }}
+              id="progressBar"
+              className="h-full rounded bg-blue-500"
+              style={{ width: `${progress}%`, transition: "width 1s linear" }}
             ></div>
           </div>
           <select
-            id='timerDuration'
-            className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
+            id="timerDuration"
+            className="mt-4 w-full rounded bg-gray-800 px-4 py-2 text-white"
             value={selectedDuration}
             onChange={(e) => setSelectedDuration(Number(e.target.value))}
           >
-            <option value='5'>5 minutes</option>
-            <option value='15'>15 minutes</option>
-            <option value='25'>25 minutes</option>
+            <option value="5">5 minutes</option>
+            <option value="15">15 minutes</option>
+            <option value="25">25 minutes</option>
           </select>
 
           <input
-            id='customDuration'
-            className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
-            type='text'
-            placeholder='Custom duration in seconds'
+            id="customDuration"
+            className="mt-4 w-full rounded bg-gray-800 px-4 py-2 text-white"
+            type="text"
+            placeholder="Custom duration in seconds"
             value={selectedDuration}
             onChange={(e) => setSelectedDuration(Number(e.target.value))}
           />
           <select
-            id='taskSelect'
-            className='bg-gray-800 text-white py-2 px-4 rounded mt-4 w-full'
-            type='text'
+            id="taskSelect"
+            className="mt-4 w-full rounded bg-gray-800 px-4 py-2 text-white"
+            type="text"
             value={selectedTask}
             onChange={(e) => setSelectedTask(Number(e.target.value))}
           >
-            <option value='0'>Select task for this session</option>
+            <option value="0">Select task for this session</option>
             {userTasks
-              .filter((task) => task.status === 'pending')
+              .filter((task) => task.status === "pending")
               .map((task) => (
                 <option key={task.id} value={task.id}>
                   {task.title}
@@ -291,36 +240,36 @@ const Timer = ({
               ))}
           </select>
         </div>
-        <div className='bg-gray-800 p-4'>
-          <h2 className='text-xl text-gray-200 font-semibold mb-2'>
+        <div className="bg-gray-800 p-4">
+          <h2 className="mb-2 text-xl font-semibold text-gray-200">
             Today&apos;s Sessions
           </h2>
           {sessionCount === 0 ? (
-            <p className='text-gray-200 text-m'>No sessions today</p>
+            <p className="text-m text-gray-200">No sessions today</p>
           ) : (
             <>
-              <p className='text-gray-200 text-m'>
+              <p className="text-m text-gray-200">
                 Sessions today: {sessionCount}
               </p>
-              <p className='text-gray-200 text-m'>
+              <p className="text-m text-gray-200">
                 Total duration today: {totalDuration} minutes
               </p>
             </>
           )}
-          <div className='flex items-center justify-between align-middle mt-4'>
+          <div className="mt-4 flex items-center justify-between align-middle">
             <Link
-              to='/sessions'
-              className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600'
+              to="/sessions"
+              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
               View all sessions
             </Link>
           </div>
         </div>
         {!creatingTask && selectedTask === 0 && (
-          <div className='flex items-center justify-center align-middle mt-4'>
+          <div className="mt-4 flex items-center justify-center align-middle">
             <button
-              id='createTaskButton'
-              className=' text-white font-bold text-xl px-20 py-10 rounded hover:bg-blue-600 border-dashed border-2 border-sky-500 opacity-70'
+              id="createTaskButton"
+              className=" rounded border-2 border-dashed border-sky-500 px-20 py-10 text-xl font-bold text-white opacity-70 hover:bg-blue-600"
               onClick={toggleTaskForm}
             >
               + Create Task

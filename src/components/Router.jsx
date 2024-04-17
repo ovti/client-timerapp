@@ -1,32 +1,27 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import App from './App';
-import ErrorPage from './ErrorPage';
-import Register from './Register';
-import Login from './Login';
-// import Categories from './Categories';
-import Sessions from './Sessions';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import App from "./App";
+import ErrorPage from "./ErrorPage";
+import Register from "./Register";
+import Login from "./Login";
+import Sessions from "./Sessions";
 
 const Router = () => {
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: <App />,
       errorElement: <ErrorPage />,
       children: [
         {
-          path: '/register',
+          path: "/register",
           element: <Register />,
         },
         {
-          path: '/login',
+          path: "/login",
           element: <Login />,
         },
-        // {
-        //   path: '/categories',
-        //   element: <Categories />,
-        // },
         {
-          path: '/sessions',
+          path: "/sessions",
           element: <Sessions />,
         },
       ],
