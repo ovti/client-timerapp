@@ -8,6 +8,7 @@ import Sessions from "./Sessions";
 const Router = () => {
   const router = createBrowserRouter([
     {
+      // path: '/~21_zalubski/timer-app',
       path: "/",
       element: <App />,
       errorElement: <ErrorPage />,

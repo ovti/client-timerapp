@@ -95,7 +95,7 @@ const Timer = ({
       return;
     }
     setIsTimerRunning(true);
-    const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
+    const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60; // Convert selected duration to minutes
     setCurrentTimer(startTime);
 
     if (remainingTime === 0) {
@@ -115,7 +115,7 @@ const Timer = ({
           return nextTimer;
         });
         setProgress((prev) => {
-          const newProgress = prev + 100 / startTime;
+          const newProgress = prev + 100 / (selectedDuration * 60); // Adjust progress calculation for minutes
           return newProgress > 100 ? 100 : newProgress;
         });
       }, 1000),
@@ -188,6 +188,7 @@ const Timer = ({
                 setProgress(0);
                 setRemainingTime(0);
                 setSelectedTask(0);
+                setSelectedDuration(5);
                 toast.success("Timer has been reset");
               }}
             >
@@ -195,7 +196,12 @@ const Timer = ({
             </button>
           </div>
           <div className="mb-4 flex items-center justify-center">
-            <p className="mb-4 text-9xl font-semibold">{currentTimer}</p>
+            <p className="mb-4 text-9xl font-semibold">
+              {Math.floor(currentTimer / 60)}:
+              {currentTimer % 60 < 10
+                ? `0${currentTimer % 60}`
+                : currentTimer % 60}
+            </p>
           </div>
           <div className="relative h-4 rounded border border-gray-800 bg-white">
             <div
@@ -219,8 +225,8 @@ const Timer = ({
             id="customDuration"
             className="0 mt-4 w-full rounded px-4 py-2 "
             type="text"
-            placeholder="Custom duration in seconds"
-            value={selectedDuration}
+            placeholder="Custom duration in minutes"
+            // value={selectedDuration}
             onChange={(e) => setSelectedDuration(Number(e.target.value))}
           />
           <select
@@ -252,7 +258,8 @@ const Timer = ({
                 Sessions today: {sessionCount}
               </p>
               <p className="text-m text-gray-200">
-                Total duration today: {totalDuration} minutes
+                Total duration today: {totalDuration}{" "}
+                {totalDuration === 1 ? "minute" : "minutes"}
               </p>
             </>
           )}

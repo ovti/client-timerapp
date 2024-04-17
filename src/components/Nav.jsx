@@ -35,7 +35,7 @@ function Nav({ loggedIn, onLogout }) {
             {loggedIn && (
               <button
                 onClick={onLogout}
-                className=" mt-4 inline-block rounded border-2 border-rose-700  px-4 py-2 text-xl font-bold leading-none  hover:border-transparent  "
+                className=" mt-4 inline-block rounded border-2 border-rose-700  px-4 py-2 text-xl font-bold leading-none  hover:border-rose-900  "
               >
                 Logout
               </button>

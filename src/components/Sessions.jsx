@@ -70,8 +70,8 @@ const Sessions = () => {
                 {sessionsByCategory[category].map((session) => (
                   <li key={session.id} className="">
                     {formatDateTime(session.createdAt)} session -{" "}
-                    {session.Task.title} - {session.timeInSeconds}{" "}
-                    {session.timeInSeconds === 1 ? "minute" : "minutes"}
+                    {session.Task.title} - {session.time}{" "}
+                    {session.time === 1 ? "minute" : "minutes"}
                     <button
                       onClick={() => deleteSession(session.id)}
                       className=" font-bold  hover:text-red-500"
