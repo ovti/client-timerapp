@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -6,28 +6,17 @@ import axios from "axios";
 const Sessions = () => {
   const { sessions, fetchSessions, fetchCategories, fetchTasks } =
     useOutletContext();
-  const [displayOption, setDisplayOption] = useState("category");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sessionsPerPage] = useState(5);
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortBy, setSortBy] = useState("category");
   const navigateTo = useNavigate();
 
-  const handleDisplayOptionChange = (e) => {
-    setDisplayOption(e.target.value);
-  };
-
-  const sessionsByCategory = sessions.reduce((acc, session) => {
-    if (!acc[session.Task.Category.category]) {
-      acc[session.Task.Category.category] = [];
-    }
-    acc[session.Task.Category.category].push(session);
-    return acc;
-  }, {});
-
-  const sessionsByTask = sessions.reduce((acc, session) => {
-    if (!acc[session.Task.title]) {
-      acc[session.Task.title] = [];
-    }
-    acc[session.Task.title].push(session);
-    return acc;
-  }, {});
+  useEffect(() => {
+    fetchSessions();
+    fetchCategories();
+    fetchTasks();
+  }, [fetchSessions, fetchCategories, fetchTasks]);
 
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
@@ -57,10 +46,56 @@ const Sessions = () => {
     }
   };
 
+  const combinedSessions = sessions.map((session) => ({
+    ...session,
+    category: session.Task.Category.category,
+    task: session.Task.title,
+  }));
+
+  const sortedSessions = combinedSessions.sort((a, b) => {
+    const compareValue = (a, b) => {
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
+    };
+
+    const sortOrder = sortDirection === "asc" ? 1 : -1;
+
+    if (sortBy === "category") {
+      return compareValue(a.category, b.category) * sortOrder;
+    } else if (sortBy === "task") {
+      return compareValue(a.task, b.task) * sortOrder;
+    } else if (sortBy === "date") {
+      return (new Date(a.createdAt) - new Date(b.createdAt)) * sortOrder;
+    } else if (sortBy === "time") {
+      return (a.time - b.time) * sortOrder;
+    }
+
+    return 0;
+  });
+
+  const indexOfLastSession = currentPage * sessionsPerPage;
+  const indexOfFirstSession = indexOfLastSession - sessionsPerPage;
+  const currentSessions = sortedSessions.slice(
+    indexOfFirstSession,
+    indexOfLastSession,
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortDirection("asc");
+    }
+  };
+
   return (
     <>
       <div className="m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-3/4">
-        <div className=" bg-red-500 p-4">
+        <div className="bg-red-500 p-4">
           <button
             onClick={() => navigateTo("/")}
             className="float-right rounded bg-fire-brick p-2 font-bold text-white hover:bg-red-600"
@@ -72,81 +107,72 @@ const Sessions = () => {
             <h1 className="text-4xl font-bold text-white">Sessions</h1>
           </div>
         </div>
-        <div className="p-4">
-          <div className="flex items-center justify-between p-4">
-            <label htmlFor="displayOption" className="text-lg font-semibold">
-              Display by:
-            </label>
-            <select
-              id="displayOption"
-              name="displayOption"
-              value={displayOption}
-              onChange={handleDisplayOptionChange}
-              className="rounded border border-fire-brick p-2"
-            >
-              <option value="category">Category</option>
-              <option value="task">Task</option>
-            </select>
-          </div>
-          {displayOption === "category" && (
-            <div className=" p-4">
-              <h2 className="mb-2 text-4xl font-semibold ">Session List</h2>
-              {Object.keys(sessionsByCategory).length === 0 && (
-                <p className="text-gray-200">No sessions found</p>
-              )}
-              {Object.keys(sessionsByCategory).map((category) => (
-                <div key={category}>
-                  <h3 className="mb-2 text-xl font-semibold ">{category}</h3>
-                  <ul>
-                    {sessionsByCategory[category].map((session) => (
-                      <li key={session.id} className="">
-                        {formatDateTime(session.createdAt)} session -{" "}
-                        {session.Task.title} - {session.time}{" "}
-                        {session.time === 1 ? "minute" : "minutes"}
-                        <button
-                          onClick={() => deleteSession(session.id)}
-                          className=" font-bold  hover:text-red-500"
-                          style={{ width: "1.5rem", height: "1.5rem" }}
-                        >
-                          x
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+        <div className="sm:p-4">
+          <table className="w-full table-auto">
+            <thead>
+              <tr>
+                <th
+                  className="cursor-pointer p-2 text-center"
+                  onClick={() => handleSort("category")}
+                >
+                  Category
+                </th>
+                <th
+                  className="cursor-pointer p-2 text-center"
+                  onClick={() => handleSort("task")}
+                >
+                  Task
+                </th>
+                <th
+                  className="cursor-pointer p-2 text-center"
+                  onClick={() => handleSort("date")}
+                >
+                  Date
+                </th>
+                <th
+                  className="cursor-pointer p-2 text-center"
+                  onClick={() => handleSort("time")}
+                >
+                  Time
+                </th>
+                <th className="p-2 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentSessions.map((session) => (
+                <tr key={session.id}>
+                  <td className="p-1 text-center">{session.category}</td>
+                  <td className="p-1 text-center">{session.task}</td>
+                  <td className="p-1 text-center">
+                    {formatDateTime(session.createdAt)}
+                  </td>
+                  <td className="p-1 text-center">{session.time}</td>
+                  <td className="p-1 text-center">
+                    <button
+                      onClick={() => deleteSession(session.id)}
+                      className="rounded bg-red-500 px-3 py-1 text-white"
+                    >
+                      x
+                    </button>
+                  </td>
+                </tr>
               ))}
-            </div>
-          )}
-
-          {displayOption === "task" && (
-            <div className=" p-4">
-              <h2 className="mb-2 text-4xl font-semibold ">Session List</h2>
-              {Object.keys(sessionsByTask).length === 0 && (
-                <p className="text-gray-200">No sessions found</p>
-              )}
-              {Object.keys(sessionsByTask).map((task) => (
-                <div key={task}>
-                  <h3 className="mb-2 text-xl font-semibold ">{task}</h3>
-                  <ul>
-                    {sessionsByTask[task].map((session) => (
-                      <li key={session.id} className="">
-                        {formatDateTime(session.createdAt)} session -{" "}
-                        {session.Task.Category.category} - {session.time}{" "}
-                        {session.time === 1 ? "minute" : "minutes"}
-                        <button
-                          onClick={() => deleteSession(session.id)}
-                          className=" font-bold  hover:text-red-500"
-                          style={{ width: "1.5rem", height: "1.5rem" }}
-                        >
-                          x
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          )}
+            </tbody>
+          </table>
+          <ul className="flex justify-center">
+            {Array.from({
+              length: Math.ceil(sortedSessions.length / sessionsPerPage),
+            }).map((_, index) => (
+              <li key={index} className="mx-1">
+                <button
+                  onClick={() => paginate(index + 1)}
+                  className="my-2 rounded bg-red-500 px-4 py-2 text-white"
+                >
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>

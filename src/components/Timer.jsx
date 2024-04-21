@@ -162,7 +162,7 @@ const Timer = ({
 
   return (
     <>
-      <div className="mx-2 mt-4 rounded border-2 border-fire-brick  md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
+      <div className="mx-2 mt-4 rounded border-2 border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
         <div className="rounded-t-lg p-2 md:p-4">
           <div className="mb-4 flex items-center justify-between p-4">
             <button
