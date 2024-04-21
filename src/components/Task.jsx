@@ -53,13 +53,13 @@ const Task = ({
 
   return (
     <div
-      className={`border-fire-brick m-2 rounded border md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4 ${loaded ? "pop-in" : ""}`}
+      className={`m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4 ${loaded ? "pop-in" : ""}`}
     >
       {creatingTask ? (
         <div className="rounded-lg  p-4">
           <button
             onClick={() => setCreatingTask(false)}
-            className="bg-fire-brick float-right rounded p-2 font-bold  hover:bg-red-600"
+            className="float-right rounded bg-fire-brick p-2 font-bold  hover:bg-red-600"
             style={{ width: "2.5rem", height: "2.5rem" }}
           >
             x
@@ -91,7 +91,7 @@ const Task = ({
               ))}
             </select>
             <button
-              className="bg-fire-brick mt-2 rounded px-3 py-1 font-bold  hover:bg-red-600"
+              className="mt-2 rounded bg-fire-brick px-3 py-1 font-bold  hover:bg-red-600"
               onClick={() => setCreatingCategory(true)}
             >
               +
@@ -124,7 +124,7 @@ const Task = ({
           />
           <button
             id="createTaskButton"
-            className="bg-fire-brick mt-4 rounded px-4 py-2  hover:bg-red-600"
+            className="mt-4 rounded bg-fire-brick px-4 py-2  hover:bg-red-600"
             onClick={addTask}
           >
             Create Task
@@ -135,7 +135,7 @@ const Task = ({
           <div className=" p-4">
             <button
               onClick={() => setSelectedTask(0)}
-              className="bg-fire-brick float-right rounded p-2 font-bold  hover:bg-red-600"
+              className="float-right rounded bg-fire-brick p-2 font-bold  hover:bg-red-600"
               style={{ width: "2.5rem", height: "2.5rem" }}
             >
               x

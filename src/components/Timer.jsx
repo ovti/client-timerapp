@@ -95,9 +95,9 @@ const Timer = ({
       return;
     }
     setIsTimerRunning(true);
-    const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60; // Convert selected duration to minutes
+    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60; // Convert selected duration to minutes
+    const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
     setCurrentTimer(startTime);
-
     if (remainingTime === 0) {
       setProgress(0);
     }
@@ -162,12 +162,12 @@ const Timer = ({
 
   return (
     <>
-      <div className="border-fire-brick mx-2 mt-4 rounded border-2  md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
+      <div className="mx-2 mt-4 rounded border-2 border-fire-brick  md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
         <div className="rounded-t-lg p-2 md:p-4">
           <div className="mb-4 flex items-center justify-between p-4">
             <button
               id="startPauseTimer"
-              className="border-fire-brick rounded border px-4 py-2 font-bold "
+              className="rounded border border-fire-brick px-4 py-2 font-bold "
               onClick={isTimerRunning ? pauseTimer : startTimer}
               disabled={selectedTask === 0}
             >
@@ -179,7 +179,7 @@ const Timer = ({
             </button>
             <button
               id="resetTimer"
-              className="border-fire-brick rounded border px-4 py-2 font-bold "
+              className="rounded border border-fire-brick px-4 py-2 font-bold "
               onClick={() => {
                 clearInterval(timer);
                 setTimer(null);
@@ -266,7 +266,7 @@ const Timer = ({
           <div className="mt-4 flex items-center justify-between align-middle">
             <Link
               to="/sessions"
-              className="bg-fire-brick rounded px-4 py-2 text-white hover:bg-red-600"
+              className="rounded bg-fire-brick px-4 py-2 text-white hover:bg-red-600"
             >
               View all sessions
             </Link>
