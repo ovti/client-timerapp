@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ import bell from "/src/assets/bell.mp3";
 
 const Timer = ({
   id,
+  sessions,
   categories,
   tasks,
   fetchSessions,
@@ -29,35 +30,6 @@ const Timer = ({
   const userCategories = categories;
   const userTasks = tasks;
 
-  const fetchSessionDataAndDuration = useCallback(async () => {
-    try {
-      const sessionResponse = await axios.get(
-        `http://localhost:3000/sessionCountToday/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      const sessionData = sessionResponse.data;
-
-      const durationResponse = await axios.get(
-        `http://localhost:3000/totalDurationToday/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      const durationData = durationResponse.data;
-
-      setSessionCount(sessionData.sessionCount);
-      setTotalDuration(durationData.totalDuration);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }, [userId]);
-
   const saveTimerSession = useCallback(async () => {
     try {
       const response = await axios.post(
@@ -75,19 +47,11 @@ const Timer = ({
       audio.play();
       fetchTasks();
       fetchSessions();
-      fetchSessionDataAndDuration();
     } catch (error) {
       toast.error("Error saving timer session");
       console.error("Error saving timer session:", error);
     }
-  }, [
-    userId,
-    selectedDuration,
-    selectedTask,
-    fetchSessions,
-    fetchSessionDataAndDuration,
-    fetchTasks,
-  ]);
+  }, [userId, selectedDuration, selectedTask, fetchSessions, fetchTasks]);
 
   const startTimer = () => {
     if (
@@ -98,7 +62,7 @@ const Timer = ({
       return;
     }
     setIsTimerRunning(true);
-    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60; // Convert selected duration to minutes
+    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
     const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
     setCurrentTimer(startTime);
     if (remainingTime === 0) {
@@ -118,7 +82,7 @@ const Timer = ({
           return nextTimer;
         });
         setProgress((prev) => {
-          const newProgress = prev + 100 / (selectedDuration * 60); // Adjust progress calculation for minutes
+          const newProgress = prev + 100 / (selectedDuration * 60);
           return newProgress > 100 ? 100 : newProgress;
         });
       }, 1000),
@@ -148,16 +112,21 @@ const Timer = ({
   };
 
   useEffect(() => {
-    fetchSessionDataAndDuration();
+    const today = new Date().toLocaleDateString();
+    const todaySessions = sessions.filter((session) => {
+      const sessionDate = new Date(session.createdAt).toLocaleDateString();
+      return sessionDate === today;
+    });
+    setSessionCount(todaySessions.length);
+    const time = todaySessions.reduce((acc, session) => {
+      return acc + session.time;
+    }, 0);
+    setTotalDuration(time);
+  }, [sessions]);
+
+  useEffect(() => {
     return () => clearInterval(timer);
-  }, [
-    userId,
-    selectedDuration,
-    selectedTask,
-    timer,
-    fetchSessions,
-    fetchSessionDataAndDuration,
-  ]);
+  }, [timer]);
 
   useEffect(() => {
     setCreatingTask(false);
@@ -305,6 +274,7 @@ const Timer = ({
 
 Timer.propTypes = {
   id: PropTypes.number.isRequired,
+  sessions: PropTypes.arrayOf(PropTypes.object).isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchCategories: PropTypes.func.isRequired,

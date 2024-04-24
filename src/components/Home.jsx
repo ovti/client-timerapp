@@ -3,6 +3,7 @@ import Timer from "./Timer";
 
 const Home = ({
   id,
+  sessions,
   categories,
   tasks,
   fetchSessions,
@@ -12,10 +13,11 @@ const Home = ({
   return (
     <Timer
       id={id}
+      sessions={sessions}
       categories={categories}
-      fetchCategories={fetchCategories}
       tasks={tasks}
       fetchSessions={fetchSessions}
+      fetchCategories={fetchCategories}
       fetchTasks={fetchTasks}
     />
   );
@@ -23,10 +25,11 @@ const Home = ({
 
 Home.propTypes = {
   id: PropTypes.number.isRequired,
+  sessions: PropTypes.arrayOf(PropTypes.object).isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fetchCategories: PropTypes.func.isRequired,
   fetchSessions: PropTypes.func.isRequired,
+  fetchCategories: PropTypes.func.isRequired,
   fetchTasks: PropTypes.func.isRequired,
 };
 

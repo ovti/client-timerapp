@@ -1,73 +1,29 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { Outlet, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import Nav from "./Nav";
 import Home from "./Home";
+import UserDataFetching from "./UserDataFetching";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [id, setId] = useState("");
   const [nickname, setNickname] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [sessions, setSessions] = useState([]);
-  const [tasks, setTasks] = useState([]);
   const userId = localStorage.getItem("userId");
   const navigateTo = useNavigate();
 
-  const fetchCategories = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/category/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  }, [userId]);
+  const {
+    categories,
+    sessions,
+    tasks,
+    fetchCategories,
+    fetchSessions,
+    fetchTasks,
+  } = UserDataFetching(userId);
 
-  const fetchSessions = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/sessions/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      setSessions(response.data);
-      console.log("Sessions:", response.data);
-    } catch (error) {
-      console.error("Error fetching sessions:", error);
-    }
-  }, [userId]);
-
-  const fetchTasks = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/tasks/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        },
-      );
-      setTasks(response.data);
-      console.log("Tasks:", response.data);
-    } catch (error) {
-      console.error("Error fetching tasks:", error);
-    }
-  }, [userId]);
-
-  const handleLogin = useCallback(() => {
+  const handleLogin = () => {
     const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
@@ -77,7 +33,7 @@ function App() {
         setNickname(decodedToken.user.username);
       }
     }
-  }, []);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -90,10 +46,7 @@ function App() {
 
   useEffect(() => {
     handleLogin();
-    fetchCategories();
-    fetchSessions();
-    fetchTasks();
-  }, [handleLogin, fetchCategories, fetchSessions, fetchTasks]);
+  }, []);
 
   return (
     <>
@@ -113,9 +66,6 @@ function App() {
       {!loggedIn && (
         <div className="my-9 flex items-center justify-center">
           <div className="grid grid-cols-1 gap-6">
-            {/* <h1 className="invisible text-center text-4xl font-bold md:visible md:text-9xl">
-              Timer App
-            </h1> */}
             <p className="text-center text-xl font-semibold md:text-4xl">
               Please login or register to continue
             </p>
@@ -139,6 +89,7 @@ function App() {
       {loggedIn && (
         <Home
           id={id}
+          sessions={sessions}
           categories={categories}
           tasks={tasks}
           fetchCategories={fetchCategories}

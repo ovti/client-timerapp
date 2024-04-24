@@ -93,7 +93,7 @@ const Sessions = () => {
       <li key={1}>
         <button
           onClick={() => paginate(1)}
-          className="my-2 rounded bg-red-500 px-4 py-2 text-white"
+          className={`mx-1 my-2 rounded bg-red-500 px-4 py-2 text-white ${currentPage === 1 ? "bg-gray-800" : ""}`}
         >
           1
         </button>
@@ -108,15 +108,17 @@ const Sessions = () => {
       );
     }
 
-    let start = currentPage > 3 ? currentPage - 2 : 2;
-    let end = currentPage < totalPages - 2 ? currentPage + 2 : totalPages - 1;
+    // let start = currentPage > 3 ? currentPage - 2 : 2;
+    // let end = currentPage < totalPages - 2 ? currentPage + 2 : totalPages - 1;
+    let start = currentPage > 3 ? currentPage - 1 : 2;
+    let end = currentPage < totalPages - 2 ? currentPage + 1 : totalPages - 1;
 
     for (let i = start; i <= end; i++) {
       pageNumbers.push(
         <li key={i}>
           <button
             onClick={() => paginate(i)}
-            className={`my-2 rounded bg-red-500 px-4 py-2 text-white ${currentPage === i ? "bg-gray-800" : ""}`}
+            className={`mx-1 my-2 rounded bg-red-500 px-4 py-2 text-white ${currentPage === i ? "bg-gray-800" : ""}`}
           >
             {i}
           </button>
@@ -132,16 +134,18 @@ const Sessions = () => {
       );
     }
 
-    pageNumbers.push(
-      <li key={totalPages}>
-        <button
-          onClick={() => paginate(totalPages)}
-          className="my-2 rounded bg-red-500 px-4 py-2 text-white"
-        >
-          {totalPages}
-        </button>
-      </li>,
-    );
+    if (totalPages > 1) {
+      pageNumbers.push(
+        <li key={totalPages}>
+          <button
+            onClick={() => paginate(totalPages)}
+            className={`mx-1 my-2 rounded bg-red-500 px-4 py-2 text-white ${currentPage === totalPages ? "bg-gray-800" : ""}`}
+          >
+            {totalPages}
+          </button>
+        </li>,
+      );
+    }
 
     return pageNumbers;
   };
@@ -164,7 +168,7 @@ const Sessions = () => {
 
   return (
     <>
-      <div className="m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-3/4">
+      <div className="m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-2/4">
         <div className="bg-red-500 p-4">
           <button
             onClick={() => navigateTo("/")}
@@ -183,8 +187,8 @@ const Sessions = () => {
           </div>
         )}
         {sessions.length !== 0 && (
-          <div className="sm:p-4">
-            <table className="w-full table-auto">
+          <div className="flex flex-col items-center justify-center sm:p-4">
+            <table className="w-3/4 table-auto">
               <thead>
                 <tr>
                   <th
