@@ -74,14 +74,84 @@ const Sessions = () => {
     return 0;
   });
 
+  const totalPages = Math.ceil(sortedSessions.length / sessionsPerPage);
+
+  const paginate = (pageNumber) => {
+    if (pageNumber < 1) {
+      setCurrentPage(1);
+    } else if (pageNumber > totalPages) {
+      setCurrentPage(totalPages);
+    } else {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+
+    pageNumbers.push(
+      <li key={1}>
+        <button
+          onClick={() => paginate(1)}
+          className="my-2 rounded bg-red-500 px-4 py-2 text-white"
+        >
+          1
+        </button>
+      </li>,
+    );
+
+    if (totalPages > 5 && currentPage > 3) {
+      pageNumbers.push(
+        <li key="left-ellipsis">
+          <span className="mx-1 my-2 flex items-center font-bold">...</span>
+        </li>,
+      );
+    }
+
+    let start = currentPage > 3 ? currentPage - 2 : 2;
+    let end = currentPage < totalPages - 2 ? currentPage + 2 : totalPages - 1;
+
+    for (let i = start; i <= end; i++) {
+      pageNumbers.push(
+        <li key={i}>
+          <button
+            onClick={() => paginate(i)}
+            className={`my-2 rounded bg-red-500 px-4 py-2 text-white ${currentPage === i ? "bg-gray-800" : ""}`}
+          >
+            {i}
+          </button>
+        </li>,
+      );
+    }
+
+    if (totalPages > 5 && currentPage < totalPages - 2) {
+      pageNumbers.push(
+        <li key="right-ellipsis">
+          <span className="mx-1 my-2 flex items-center font-bold">...</span>
+        </li>,
+      );
+    }
+
+    pageNumbers.push(
+      <li key={totalPages}>
+        <button
+          onClick={() => paginate(totalPages)}
+          className="my-2 rounded bg-red-500 px-4 py-2 text-white"
+        >
+          {totalPages}
+        </button>
+      </li>,
+    );
+
+    return pageNumbers;
+  };
+
   const indexOfLastSession = currentPage * sessionsPerPage;
   const indexOfFirstSession = indexOfLastSession - sessionsPerPage;
   const currentSessions = sortedSessions.slice(
     indexOfFirstSession,
     indexOfLastSession,
   );
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleSort = (column) => {
     if (sortBy === column) {
@@ -107,73 +177,67 @@ const Sessions = () => {
             <h1 className="text-4xl font-bold text-white">Sessions</h1>
           </div>
         </div>
-        <div className="sm:p-4">
-          <table className="w-full table-auto">
-            <thead>
-              <tr>
-                <th
-                  className="cursor-pointer p-2 text-center"
-                  onClick={() => handleSort("category")}
-                >
-                  Category
-                </th>
-                <th
-                  className="cursor-pointer p-2 text-center"
-                  onClick={() => handleSort("task")}
-                >
-                  Task
-                </th>
-                <th
-                  className="cursor-pointer p-2 text-center"
-                  onClick={() => handleSort("date")}
-                >
-                  Date
-                </th>
-                <th
-                  className="cursor-pointer p-2 text-center"
-                  onClick={() => handleSort("time")}
-                >
-                  Time
-                </th>
-                <th className="p-2 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentSessions.map((session) => (
-                <tr key={session.id}>
-                  <td className="p-1 text-center">{session.category}</td>
-                  <td className="p-1 text-center">{session.task}</td>
-                  <td className="p-1 text-center">
-                    {formatDateTime(session.createdAt)}
-                  </td>
-                  <td className="p-1 text-center">{session.time}</td>
-                  <td className="p-1 text-center">
-                    <button
-                      onClick={() => deleteSession(session.id)}
-                      className="rounded bg-red-500 px-3 py-1 text-white"
-                    >
-                      x
-                    </button>
-                  </td>
+        {sessions.length === 0 && (
+          <div className="p-4">
+            <h2 className="text-center">You have no sessions</h2>
+          </div>
+        )}
+        {sessions.length !== 0 && (
+          <div className="sm:p-4">
+            <table className="w-full table-auto">
+              <thead>
+                <tr>
+                  <th
+                    className="cursor-pointer p-2 text-center"
+                    onClick={() => handleSort("category")}
+                  >
+                    Category
+                  </th>
+                  <th
+                    className="cursor-pointer p-2 text-center"
+                    onClick={() => handleSort("task")}
+                  >
+                    Task
+                  </th>
+                  <th
+                    className="cursor-pointer p-2 text-center"
+                    onClick={() => handleSort("date")}
+                  >
+                    Date
+                  </th>
+                  <th
+                    className="cursor-pointer p-2 text-center"
+                    onClick={() => handleSort("time")}
+                  >
+                    Time
+                  </th>
+                  <th className="p-2 text-center">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <ul className="flex justify-center">
-            {Array.from({
-              length: Math.ceil(sortedSessions.length / sessionsPerPage),
-            }).map((_, index) => (
-              <li key={index} className="mx-1">
-                <button
-                  onClick={() => paginate(index + 1)}
-                  className="my-2 rounded bg-red-500 px-4 py-2 text-white"
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+              </thead>
+              <tbody>
+                {currentSessions.map((session) => (
+                  <tr key={session.id}>
+                    <td className="p-1 text-center">{session.category}</td>
+                    <td className="p-1 text-center">{session.task}</td>
+                    <td className="p-1 text-center">
+                      {formatDateTime(session.createdAt)}
+                    </td>
+                    <td className="p-1 text-center">{session.time}</td>
+                    <td className="p-1 text-center">
+                      <button
+                        onClick={() => deleteSession(session.id)}
+                        className="rounded bg-red-500 px-3 py-1 text-white"
+                      >
+                        x
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <ul className="flex justify-center">{renderPageNumbers()}</ul>
+          </div>
+        )}
       </div>
     </>
   );

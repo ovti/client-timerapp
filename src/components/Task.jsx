@@ -71,6 +71,7 @@ const Task = ({
             className="mt-2 w-full rounded  px-4 py-2 "
             type="text"
             placeholder="Title"
+            maxLength="64"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -119,6 +120,8 @@ const Task = ({
             className="mt-2 w-full rounded px-4 py-2 "
             type="number"
             placeholder="Sessions needed"
+            max="99"
+            maxLength="2"
             value={sessionsToComplete}
             onChange={(e) => setSessionsToComplete(Number(e.target.value))}
           />

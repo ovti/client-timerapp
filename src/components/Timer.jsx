@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Task from "./Task";
+import bell from "/src/assets/bell.mp3";
 
 const Timer = ({
   id,
@@ -70,6 +71,8 @@ const Timer = ({
       );
       toast.success("Timer session saved");
       console.log(response);
+      const audio = new Audio(bell);
+      audio.play();
       fetchTasks();
       fetchSessions();
       fetchSessionDataAndDuration();
@@ -226,6 +229,7 @@ const Timer = ({
             className="0 mt-4 w-full rounded px-4 py-2 "
             type="text"
             placeholder="Custom duration in minutes"
+            maxLength="2"
             // value={selectedDuration}
             onChange={(e) => setSelectedDuration(Number(e.target.value))}
           />
