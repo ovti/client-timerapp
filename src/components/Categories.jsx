@@ -50,11 +50,11 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
 
   return (
     <div
-      className={`0 border-fire-brick m-4 mx-auto rounded-lg border-2 p-4 ${loaded ? "pop-in" : ""}`}
+      className={`0 m-4 mx-auto rounded-lg border-2 border-fire-brick p-4 ${loaded ? "pop-in" : ""}`}
     >
       <button
         onClick={() => setCreatingCategory(false)}
-        className="bg-fire-brick float-right rounded p-2 font-bold text-white hover:bg-red-600"
+        className="float-right rounded bg-fire-brick p-2 font-bold text-white hover:bg-red-600"
         style={{ width: "2.5rem", height: "2.5rem" }}
       >
         x
@@ -71,7 +71,7 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
               className="mr-2 rounded border  p-2  focus:outline-none"
             />
             <button
-              className="bg-fire-brick mt-4 rounded px-4 py-2 font-bold text-white hover:bg-blue-600"
+              className="mt-4 rounded bg-fire-brick px-4 py-2 font-bold text-white hover:bg-blue-600"
               onClick={addCategory}
             >
               +

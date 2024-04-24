@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -12,11 +12,11 @@ const Sessions = () => {
   const [sortBy, setSortBy] = useState("category");
   const navigateTo = useNavigate();
 
-  useEffect(() => {
-    fetchSessions();
-    fetchCategories();
-    fetchTasks();
-  }, [fetchSessions, fetchCategories, fetchTasks]);
+  // useEffect(() => {
+  //   fetchSessions();
+  //   fetchCategories();
+  //   fetchTasks();
+  // }, [fetchSessions, fetchCategories, fetchTasks]);
 
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
@@ -183,7 +183,7 @@ const Sessions = () => {
         </div>
         {sessions.length === 0 && (
           <div className="p-4">
-            <h2 className="text-center">You have no sessions</h2>
+            <h2 className="text-center">You have no saved sessions yet!</h2>
           </div>
         )}
         {sessions.length !== 0 && (
