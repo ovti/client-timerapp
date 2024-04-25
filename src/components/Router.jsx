@@ -4,6 +4,7 @@ import ErrorPage from "./ErrorPage";
 import Register from "./Register";
 import Login from "./Login";
 import Sessions from "./Sessions";
+import CompletedTasks from "./CompletedTasks";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const Router = () => {
         {
           path: "/sessions",
           element: <Sessions />,
+        },
+        {
+          path: "/completed-tasks",
+          element: <CompletedTasks />,
         },
       ],
     },

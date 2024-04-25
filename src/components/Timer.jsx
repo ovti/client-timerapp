@@ -89,13 +89,6 @@ const Timer = ({
     );
   };
 
-  useEffect(() => {
-    if (!isTimerRunning && currentTimer === 0 && timer) {
-      saveTimerSession();
-      setTimer(null);
-    }
-  }, [isTimerRunning, currentTimer, timer, saveTimerSession]);
-
   const pauseTimer = () => {
     if (paused) {
       startTimer();
@@ -110,6 +103,13 @@ const Timer = ({
   const toggleTaskForm = () => {
     setCreatingTask(!creatingTask);
   };
+
+  useEffect(() => {
+    if (!isTimerRunning && currentTimer === 0 && timer) {
+      saveTimerSession();
+      setTimer(null);
+    }
+  }, [isTimerRunning, currentTimer, timer, saveTimerSession]);
 
   useEffect(() => {
     const today = new Date().toLocaleDateString();
@@ -239,9 +239,15 @@ const Timer = ({
           <div className="mt-4 flex items-center justify-between align-middle">
             <Link
               to="/sessions"
-              className="rounded bg-fire-brick px-4 py-2 text-white hover:bg-red-600"
+              className="rounded bg-fire-brick p-2 text-white hover:bg-red-600 lg:px-4 lg:py-2"
             >
               View all sessions
+            </Link>
+            <Link
+              to="/completed-tasks"
+              className="rounded bg-fire-brick p-2 text-white hover:bg-red-600 lg:px-4 lg:py-2"
+            >
+              View completed tasks
             </Link>
           </div>
         </div>

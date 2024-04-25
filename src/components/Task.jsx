@@ -135,36 +135,37 @@ const Task = ({
         </div>
       ) : (
         selectedTask !== 0 && (
-          <div className=" p-4">
+          <div className="rounded-lg border border-gray-300 p-4">
             <button
               onClick={() => setSelectedTask(0)}
-              className="float-right rounded bg-fire-brick p-2 font-bold  hover:bg-red-600"
+              className="float-right rounded bg-fire-brick p-2 font-bold hover:bg-red-600"
               style={{ width: "2.5rem", height: "2.5rem" }}
             >
               x
             </button>
-            <h2 className="mb-2 text-xl font-semibold ">Current Task</h2>
-            <p className="text-m ">
-              Task: {userTasks.find((task) => task.id === selectedTask).title}
+            <h2 className="mb-2 text-3xl font-bold">Current Task</h2>
+            <p className="text-xl">
+              <b>Task:</b>{" "}
+              {userTasks.find((task) => task.id === selectedTask)?.title ||
+                "N/A"}
             </p>
-            <p className="text-m ">
-              Category:{" "}
-              {
-                userTasks.find((task) => task.id === selectedTask).Category
-                  .category
-              }
+            <p className="text-xl">
+              <b>Category:</b>{" "}
+              {userTasks.find((task) => task.id === selectedTask)?.Category
+                .category || "N/A"}
             </p>
-            <p className="text-m ">
-              Description:{" "}
-              {userTasks.find((task) => task.id === selectedTask).description}
+            <p className="text-xl">
+              <b>Description:</b>{" "}
+              {userTasks.find((task) => task.id === selectedTask)
+                ?.description || "N/A"}
             </p>
-            <p className="text-m ">
-              Sessions to complete:{" "}
-              {userTasks.find((task) => task.id === selectedTask).sessionCount}/
-              {
-                userTasks.find((task) => task.id === selectedTask)
-                  .sessionsToComplete
-              }
+            <p className="text-xl">
+              <b>Sessions to complete:</b>{" "}
+              {userTasks.find((task) => task.id === selectedTask)
+                ?.sessionCount || "N/A"}{" "}
+              /{" "}
+              {userTasks.find((task) => task.id === selectedTask)
+                ?.sessionsToComplete || "N/A"}
             </p>
           </div>
         )

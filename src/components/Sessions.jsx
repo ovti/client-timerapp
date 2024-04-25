@@ -168,7 +168,7 @@ const Sessions = () => {
 
   return (
     <>
-      <div className="m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-2/4">
+      <div className="m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-5/12">
         <div className="bg-red-500 p-4">
           <button
             onClick={() => navigateTo("/")}
@@ -187,7 +187,7 @@ const Sessions = () => {
           </div>
         )}
         {sessions.length !== 0 && (
-          <div className="flex flex-col items-center justify-center sm:p-4">
+          <div className="flex flex-col items-center justify-center overflow-x-auto sm:p-4">
             <table className="w-3/4 table-auto">
               <thead>
                 <tr>
@@ -232,7 +232,7 @@ const Sessions = () => {
                         onClick={() => deleteSession(session.id)}
                         className="rounded bg-red-500 px-3 py-1 text-white"
                       >
-                        x
+                        X
                       </button>
                     </td>
                   </tr>
