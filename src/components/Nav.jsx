@@ -1,3 +1,4 @@
+// nav.jsx
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -12,7 +13,7 @@ function Nav({ loggedIn, onLogout }) {
             </Link>
           </span>
         </div>
-        <div className="block w-full flex-grow md:flex md:w-auto md:items-center">
+        <div className="block w-full flex-grow md:flex md:w-auto md:items-center md:justify-center md:align-middle">
           <div className="text-xl md:flex-grow">
             {!loggedIn && (
               <div className="flex justify-center text-2xl md:justify-end">
@@ -27,6 +28,16 @@ function Nav({ loggedIn, onLogout }) {
                   className="mr-4 mt-4 block   lg:mt-0 lg:inline-block"
                 >
                   Register
+                </Link>
+              </div>
+            )}
+            {loggedIn && (
+              <div className="flex justify-center text-2xl md:justify-end">
+                <Link
+                  to="/settings"
+                  className="mr-2 mt-4 block lg:mt-2 lg:inline-block"
+                >
+                  Settings
                 </Link>
               </div>
             )}
