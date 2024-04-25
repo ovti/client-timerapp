@@ -5,6 +5,7 @@ import Register from "./Register";
 import Login from "./Login";
 import Sessions from "./Sessions";
 import CompletedTasks from "./CompletedTasks";
+import UserSettings from "./UserSettings";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const Router = () => {
         {
           path: "/completed-tasks",
           element: <CompletedTasks />,
+        },
+        {
+          path: "/settings",
+          element: <UserSettings />,
         },
       ],
     },

@@ -143,29 +143,29 @@ const Task = ({
             >
               x
             </button>
-            <h2 className="mb-2 text-3xl font-bold">Current Task</h2>
-            <p className="text-xl">
+            <h2 className="mb-2 text-2xl font-bold">Current Task</h2>
+            <p className="text-l">
               <b>Task:</b>{" "}
               {userTasks.find((task) => task.id === selectedTask)?.title ||
                 "N/A"}
             </p>
-            <p className="text-xl">
+            <p className="text-l">
               <b>Category:</b>{" "}
               {userTasks.find((task) => task.id === selectedTask)?.Category
                 .category || "N/A"}
             </p>
-            <p className="text-xl">
+            <p className="text-l">
               <b>Description:</b>{" "}
               {userTasks.find((task) => task.id === selectedTask)
                 ?.description || "N/A"}
             </p>
-            <p className="text-xl">
+            <p className="text-l">
               <b>Sessions to complete:</b>{" "}
               {userTasks.find((task) => task.id === selectedTask)
-                ?.sessionCount || "N/A"}{" "}
+                ?.sessionCount || "0"}{" "}
               /{" "}
               {userTasks.find((task) => task.id === selectedTask)
-                ?.sessionsToComplete || "N/A"}
+                ?.sessionsToComplete || "0"}
             </p>
           </div>
         )

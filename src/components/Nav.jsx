@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 function Nav({ loggedIn, onLogout }) {
   return (
     <>
-      <nav className="border-fire-brick mx-auto flex w-11/12  flex-wrap items-center justify-center border-b-2 p-3 md:mx-auto md:w-3/4 md:border-b-4 md:p-4 lg:mx-auto lg:w-1/2 lg:justify-between lg:p-6">
+      <nav className="mx-auto flex w-11/12 flex-wrap  items-center justify-center border-b-2 border-fire-brick p-3 md:mx-auto md:w-3/4 md:border-b-4 md:p-4 lg:mx-auto lg:w-1/2 lg:justify-between lg:p-6">
         <div className="flex flex-shrink-0 ">
           <span className="text-5xl font-semibold tracking-tight">
             <Link to="/" className=" block font-bold   lg:mt-0 lg:inline-block">

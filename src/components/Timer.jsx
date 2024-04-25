@@ -26,6 +26,10 @@ const Timer = ({
   const [paused, setPaused] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
   const [creatingTask, setCreatingTask] = useState(false);
+  const [currentBreak, setCurrentBreak] = useState(0);
+  const [isBreak, setIsBreak] = useState(false);
+  const [breakTimer, setBreakTimer] = useState(null);
+  const breakTime = 5 * 60;
   const userId = id;
   const userCategories = categories;
   const userTasks = tasks;
@@ -61,9 +65,15 @@ const Timer = ({
       toast.error("Task already completed");
       return;
     }
+    if (isBreak && breakTimer) {
+      clearInterval(breakTimer);
+      setBreakTimer(null);
+      setIsBreak(false);
+    }
+
     setIsTimerRunning(true);
-    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
-    const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
+    const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
+    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
     setCurrentTimer(startTime);
     if (remainingTime === 0) {
       setProgress(0);
@@ -93,11 +103,49 @@ const Timer = ({
     if (paused) {
       startTimer();
       setPaused(false);
+      if (isBreak && breakTimer) {
+        clearInterval(breakTimer);
+        setBreakTimer(null);
+        setIsBreak(false);
+      }
     } else {
       clearInterval(timer);
       setPaused(true);
       setRemainingTime(currentTimer);
     }
+  };
+
+  const startBreak = () => {
+    if (isTimerRunning) {
+      clearInterval(timer);
+      setTimer(null);
+      setPaused(true);
+      setRemainingTime(currentTimer);
+    }
+
+    if (isBreak) {
+      clearInterval(breakTimer);
+      setBreakTimer(null);
+      setIsBreak(false);
+      return;
+    }
+
+    setIsBreak(true);
+    const breakDuration = breakTime;
+    setCurrentBreak(breakDuration);
+    const newBreakTimer = setInterval(() => {
+      setCurrentBreak((prev) => {
+        const nextBreak = prev - 1;
+        if (nextBreak <= 0) {
+          clearInterval(newBreakTimer);
+          setIsBreak(false);
+          return 0;
+        }
+        return nextBreak;
+      });
+    }, 1000);
+    setBreakTimer(newBreakTimer);
+    toast.success("Break started");
   };
 
   const toggleTaskForm = () => {
@@ -139,7 +187,10 @@ const Timer = ({
           <div className="mb-4 flex items-center justify-between p-4">
             <button
               id="startPauseTimer"
-              className="rounded border border-fire-brick px-4 py-2 font-bold "
+              // className="m-2 rounded border border-fire-brick px-4 py-2 font-bold"
+              className={`m-2 rounded border-fire-brick px-4 py-2 font-bold ${
+                isTimerRunning ? "border-2" : "border"
+              }`}
               onClick={isTimerRunning ? pauseTimer : startTimer}
               disabled={selectedTask === 0}
             >
@@ -149,9 +200,21 @@ const Timer = ({
                   : "Pause Timer"
                 : "Start Timer"}
             </button>
+
+            <button
+              id="startBreak"
+              // className="rounded border border-fire-brick px-4 py-2 font-bold "
+              className={`m-2 rounded border-fire-brick px-4 py-2 font-bold ${
+                isBreak ? "border-2" : "border"
+              }`}
+              onClick={startBreak}
+            >
+              {isBreak ? "End Break" : "Start Break"}
+            </button>
+
             <button
               id="resetTimer"
-              className="rounded border border-fire-brick px-4 py-2 font-bold "
+              className="m-2 rounded border border-fire-brick px-4 py-2 font-bold"
               onClick={() => {
                 clearInterval(timer);
                 setTimer(null);
@@ -161,6 +224,9 @@ const Timer = ({
                 setRemainingTime(0);
                 setSelectedTask(0);
                 setSelectedDuration(5);
+                setPaused(false);
+                setIsBreak(false);
+                setCurrentBreak(0);
                 toast.success("Timer has been reset");
               }}
             >
@@ -168,12 +234,21 @@ const Timer = ({
             </button>
           </div>
           <div className="mb-4 flex items-center justify-center">
-            <p className="mb-4 text-9xl font-semibold">
-              {Math.floor(currentTimer / 60)}:
-              {currentTimer % 60 < 10
-                ? `0${currentTimer % 60}`
-                : currentTimer % 60}
-            </p>
+            {!isBreak ? (
+              <p className="mb-4 text-9xl font-semibold">
+                {Math.floor(currentTimer / 60)}:
+                {currentTimer % 60 < 10
+                  ? `0${currentTimer % 60}`
+                  : currentTimer % 60}
+              </p>
+            ) : (
+              <p className="mb-4 text-9xl font-semibold">
+                {Math.floor(currentBreak / 60)}:
+                {currentBreak % 60 < 10
+                  ? `0${currentBreak % 60}`
+                  : currentBreak % 60}
+              </p>
+            )}
           </div>
           <div className="relative h-4 rounded border border-gray-800 bg-white">
             <div
