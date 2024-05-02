@@ -18,8 +18,9 @@ const UserDataFetching = (userId) => {
         },
       );
       setSettings(response.data);
-      console.log("Break duration:", response.data.breakDuration);
-      console.log("Alarm sound:", response.data.alarmSound);
+      // console.log("Break duration:", response.data.breakDuration);
+      // console.log("Alarm sound:", response.data.alarmSound);
+      // console.log("Auto resume:", response.data.autoResume);
     } catch (error) {
       console.error("Error fetching settings:", error);
     }
@@ -52,7 +53,7 @@ const UserDataFetching = (userId) => {
         },
       );
       setSessions(response.data);
-      console.log("Sessions:", response.data);
+      // console.log("Sessions:", response.data);
     } catch (error) {
       console.error("Error fetching sessions:", error);
     }
@@ -69,17 +70,17 @@ const UserDataFetching = (userId) => {
         },
       );
       setTasks(response.data);
-      console.log("Tasks:", response.data);
+      // console.log("Tasks:", response.data);
     } catch (error) {
       console.error("Error fetching tasks:", error);
     }
   }, [userId]);
 
   useEffect(() => {
+    fetchSettings();
     fetchCategories();
     fetchSessions();
     fetchTasks();
-    fetchSettings();
   }, [fetchCategories, fetchSessions, fetchTasks, fetchSettings]);
 
   return {

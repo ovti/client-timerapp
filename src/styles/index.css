@@ -27,7 +27,8 @@ h1 {
 
 input,
 textarea,
-select {
+select,
+checkbox {
   border: 1px solid #bb0a21;
   background-color: #f9f9f9;
   font-weight: 500;
@@ -35,7 +36,8 @@ select {
 
 input:focus,
 textarea:focus,
-select:focus {
+select:focus,
+checkbox:focus {
   outline: none;
 }
 

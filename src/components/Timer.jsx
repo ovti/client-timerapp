@@ -35,7 +35,6 @@ const Timer = ({
   const [currentBreak, setCurrentBreak] = useState(0);
   const [isBreak, setIsBreak] = useState(false);
   const [breakTimer, setBreakTimer] = useState(null);
-  const breakTime = userSettings.breakDuration * 60 || 5 * 60;
 
   const saveTimerSession = useCallback(async () => {
     try {
@@ -58,7 +57,10 @@ const Timer = ({
       } else if (userSettings.alarmSound === "alarm") {
         const audio = new Audio(alarm);
         audio.play();
+      } else if (userSettings.alarmSound === "none") {
+        // do nothing
       }
+
       fetchTasks();
       fetchSessions();
     } catch (error) {
@@ -89,8 +91,8 @@ const Timer = ({
     }
 
     setIsTimerRunning(true);
-    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
-    const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
+    const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
+    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
     setCurrentTimer(startTime);
     if (remainingTime === 0) {
       setProgress(0);
@@ -148,7 +150,7 @@ const Timer = ({
     }
 
     setIsBreak(true);
-    const breakDuration = breakTime;
+    const breakDuration = userSettings.breakDuration * 60 || 5 * 60;
     setCurrentBreak(breakDuration);
     const newBreakTimer = setInterval(() => {
       setCurrentBreak((prev) => {
@@ -196,6 +198,19 @@ const Timer = ({
   useEffect(() => {
     setCreatingTask(false);
   }, [selectedTask]);
+
+  const handleUnpauseAfterBreak = async () => {
+    if (userSettings.autoResume) {
+      setPaused(false);
+      startTimer();
+    }
+  };
+
+  useEffect(() => {
+    if (!isBreak && currentBreak === 0 && breakTimer && selectedTask !== 0) {
+      handleUnpauseAfterBreak();
+    }
+  }, [isBreak, currentBreak, breakTimer, selectedTask]);
 
   return (
     <>
