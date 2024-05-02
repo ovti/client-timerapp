@@ -18,6 +18,8 @@ function App() {
     categories,
     sessions,
     tasks,
+    settings,
+    fetchSettings,
     fetchCategories,
     fetchSessions,
     fetchTasks,
@@ -84,6 +86,8 @@ function App() {
           fetchSessions,
           tasks,
           fetchTasks,
+          settings,
+          fetchSettings,
         }}
       />
       {loggedIn && (
@@ -92,6 +96,7 @@ function App() {
           sessions={sessions}
           categories={categories}
           tasks={tasks}
+          settings={settings}
           fetchCategories={fetchCategories}
           fetchSessions={fetchSessions}
           fetchTasks={fetchTasks}

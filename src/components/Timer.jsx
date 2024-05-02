@@ -5,16 +5,22 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import Task from "./Task";
 import bell from "/src/assets/bell.mp3";
+import alarm from "/src/assets/alarm.mp3";
 
 const Timer = ({
   id,
   sessions,
   categories,
   tasks,
+  settings,
   fetchSessions,
   fetchCategories,
   fetchTasks,
 }) => {
+  const userId = id;
+  const userSettings = settings;
+  const userCategories = categories;
+  const userTasks = tasks;
   const [sessionCount, setSessionCount] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(5);
@@ -29,10 +35,7 @@ const Timer = ({
   const [currentBreak, setCurrentBreak] = useState(0);
   const [isBreak, setIsBreak] = useState(false);
   const [breakTimer, setBreakTimer] = useState(null);
-  const breakTime = 5 * 60;
-  const userId = id;
-  const userCategories = categories;
-  const userTasks = tasks;
+  const breakTime = userSettings.breakDuration * 60 || 5 * 60;
 
   const saveTimerSession = useCallback(async () => {
     try {
@@ -47,15 +50,29 @@ const Timer = ({
       );
       toast.success("Timer session saved");
       console.log(response);
-      const audio = new Audio(bell);
-      audio.play();
+      // const audio = new Audio(bell);
+      // audio.play();
+      if (userSettings.alarmSound === "bell") {
+        const audio = new Audio(bell);
+        audio.play();
+      } else if (userSettings.alarmSound === "alarm") {
+        const audio = new Audio(alarm);
+        audio.play();
+      }
       fetchTasks();
       fetchSessions();
     } catch (error) {
       toast.error("Error saving timer session");
       console.error("Error saving timer session:", error);
     }
-  }, [userId, selectedDuration, selectedTask, fetchSessions, fetchTasks]);
+  }, [
+    userId,
+    selectedDuration,
+    selectedTask,
+    fetchSessions,
+    fetchTasks,
+    userSettings,
+  ]);
 
   const startTimer = () => {
     if (
@@ -358,6 +375,7 @@ Timer.propTypes = {
   sessions: PropTypes.arrayOf(PropTypes.object).isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  settings: PropTypes.object.isRequired,
   fetchCategories: PropTypes.func.isRequired,
   fetchSessions: PropTypes.func.isRequired,
   fetchTasks: PropTypes.func.isRequired,

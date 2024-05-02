@@ -5,6 +5,25 @@ const UserDataFetching = (userId) => {
   const [categories, setCategories] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [settings, setSettings] = useState({});
+
+  const fetchSettings = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/settings/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      setSettings(response.data);
+      console.log("Break duration:", response.data.breakDuration);
+      console.log("Alarm sound:", response.data.alarmSound);
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+    }
+  }, [userId]);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -60,12 +79,15 @@ const UserDataFetching = (userId) => {
     fetchCategories();
     fetchSessions();
     fetchTasks();
-  }, [fetchCategories, fetchSessions, fetchTasks]);
+    fetchSettings();
+  }, [fetchCategories, fetchSessions, fetchTasks, fetchSettings]);
 
   return {
     categories,
     sessions,
     tasks,
+    settings,
+    fetchSettings,
     fetchCategories,
     fetchSessions,
     fetchTasks,

@@ -6,6 +6,7 @@ const Home = ({
   sessions,
   categories,
   tasks,
+  settings,
   fetchSessions,
   fetchCategories,
   fetchTasks,
@@ -16,6 +17,7 @@ const Home = ({
       sessions={sessions}
       categories={categories}
       tasks={tasks}
+      settings={settings}
       fetchSessions={fetchSessions}
       fetchCategories={fetchCategories}
       fetchTasks={fetchTasks}
@@ -28,6 +30,7 @@ Home.propTypes = {
   sessions: PropTypes.arrayOf(PropTypes.object).isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  settings: PropTypes.object.isRequired,
   fetchSessions: PropTypes.func.isRequired,
   fetchCategories: PropTypes.func.isRequired,
   fetchTasks: PropTypes.func.isRequired,
