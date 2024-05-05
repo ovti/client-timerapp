@@ -7,10 +7,12 @@ const UserDataFetching = (userId) => {
   const [tasks, setTasks] = useState([]);
   const [settings, setSettings] = useState({});
 
+  const API_URL = import.meta.env.VITE_BASE_API_URL;
+
   const fetchSettings = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/settings/${userId}`,
+        `${API_URL}/settings/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -24,12 +26,12 @@ const UserDataFetching = (userId) => {
     } catch (error) {
       console.error("Error fetching settings:", error);
     }
-  }, [userId]);
+  }, [userId, API_URL]);
 
   const fetchCategories = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/category/${userId}`,
+        `${API_URL}/category/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -40,12 +42,12 @@ const UserDataFetching = (userId) => {
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
-  }, [userId]);
+  }, [userId, API_URL]);
 
   const fetchSessions = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/sessions/${userId}`,
+        `${API_URL}/sessions/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -57,12 +59,12 @@ const UserDataFetching = (userId) => {
     } catch (error) {
       console.error("Error fetching sessions:", error);
     }
-  }, [userId]);
+  }, [userId, API_URL]);
 
   const fetchTasks = useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/tasks/${userId}`,
+        `${API_URL}/tasks/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -74,7 +76,7 @@ const UserDataFetching = (userId) => {
     } catch (error) {
       console.error("Error fetching tasks:", error);
     }
-  }, [userId]);
+  }, [userId, API_URL]);
 
   useEffect(() => {
     fetchSettings();

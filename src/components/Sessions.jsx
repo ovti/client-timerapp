@@ -12,11 +12,7 @@ const Sessions = () => {
   const [sortBy, setSortBy] = useState("category");
   const navigateTo = useNavigate();
 
-  // useEffect(() => {
-  //   fetchSessions();
-  //   fetchCategories();
-  //   fetchTasks();
-  // }, [fetchSessions, fetchCategories, fetchTasks]);
+  const API_URL = import.meta.env.VITE_BASE_API_URL;
 
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
@@ -31,7 +27,7 @@ const Sessions = () => {
 
   const deleteSession = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/session/${id}`, {
+      await axios.delete(`${API_URL}/session/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

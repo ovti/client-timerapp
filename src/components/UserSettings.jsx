@@ -3,6 +3,8 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const API_URL = import.meta.env.VITE_BASE_API_URL;
+
 const UserSettings = () => {
   const {
     id,
@@ -28,7 +30,7 @@ const UserSettings = () => {
 
   const deleteAllData = async () => {
     try {
-      await axios.delete(`http://localhost:3000/user/${id}`, {
+      await axios.delete(`${API_URL}/user/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -48,7 +50,7 @@ const UserSettings = () => {
   const updateSettings = async () => {
     try {
       await axios.put(
-        `http://localhost:3000/settings/${id}/${breakDuration}/${alarmSound}/${autoResume}`,
+        `${API_URL}/settings/${id}/${breakDuration}/${alarmSound}/${autoResume}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

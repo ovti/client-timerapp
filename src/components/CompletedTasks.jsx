@@ -11,9 +11,12 @@ const CompletedTasks = () => {
   const [sortBy, setSortBy] = useState("title");
   const navigateTo = useNavigate();
 
+  const API_URL = import.meta.env.VITE_BASE_API_URL;
+
+
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/task/${id}`, {
+      await axios.delete(`${API_URL}/task/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

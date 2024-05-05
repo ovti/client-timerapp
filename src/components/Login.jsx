@@ -9,10 +9,12 @@ const Login = () => {
   const navigateTo = useNavigate();
   const handleLogin = useOutletContext().handleLogin;
 
+  const API_URL = import.meta.env.VITE_BASE_API_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post(`${API_URL}/login`, {
         username,
         password,
       });

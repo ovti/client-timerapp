@@ -36,10 +36,12 @@ const Timer = ({
   const [isBreak, setIsBreak] = useState(false);
   const [breakTimer, setBreakTimer] = useState(null);
 
+  const API_URL = import.meta.env.VITE_BASE_API_URL;
+
   const saveTimerSession = useCallback(async () => {
     try {
       const response = await axios.post(
-        `http://localhost:3000/saveTimerSession/${userId}/${selectedDuration}/${selectedTask}`,
+        `${API_URL}/saveTimerSession/${userId}/${selectedDuration}/${selectedTask}`,
         null,
         {
           headers: {
@@ -74,6 +76,7 @@ const Timer = ({
     fetchSessions,
     fetchTasks,
     userSettings,
+    API_URL,
   ]);
 
   const startTimer = () => {

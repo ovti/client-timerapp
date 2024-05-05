@@ -8,21 +8,19 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
   const userId = localStorage.getItem("userId");
   const [loaded, setLoaded] = useState(false);
 
+  const API_URL = import.meta.env.VITE_BASE_API_URL;
+
   useEffect(() => {
     setLoaded(true);
   }, []);
 
   const addCategory = async () => {
     try {
-      await axios.post(
-        `http://localhost:3000/category/${userId}/${newCategory}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      await axios.post(`${API_URL}/category/${userId}/${newCategory}`, null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
       toast.success("Category added");
       setCreatingCategory(false);
       fetchCategories();
@@ -35,7 +33,7 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
 
   const deleteCategory = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/category/${id}`, {
+      await axios.delete(`${API_URL}/category/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

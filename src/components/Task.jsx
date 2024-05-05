@@ -22,6 +22,8 @@ const Task = ({
   const [creatingCategory, setCreatingCategory] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
+  const API_URL = import.meta.env.VITE_BASE_API_URL;
+
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -29,7 +31,7 @@ const Task = ({
   const addTask = async () => {
     try {
       await axios.post(
-        `http://localhost:3000/task/${userId}/${selectedCategory}/${title}/${description}/${sessionsToComplete}/`,
+        `${API_URL}/task/${userId}/${selectedCategory}/${title}/${description}/${sessionsToComplete}/`,
         null,
         {
           headers: {

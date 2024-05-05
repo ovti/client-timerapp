@@ -10,9 +10,11 @@ const Register = () => {
   const [error, setError] = useState("");
   const navigateTo = useNavigate();
 
+  const API_URL = import.meta.env.VITE_BASE_API_URL;
+
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/signup", {
+      const response = await axios.post(`${API_URL}/signup`, {
         username,
         password,
         confirmPassword,
