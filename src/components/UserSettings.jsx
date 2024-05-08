@@ -73,15 +73,19 @@ const UserSettings = () => {
 
   return (
     <div className="m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
-      <div className="rounded-lg p-4">
-        <button
-          onClick={() => navigateTo("/")}
-          className="float-right rounded bg-fire-brick p-2 font-bold  hover:bg-red-600"
-          style={{ width: "2.5rem", height: "2.5rem" }}
-        >
-          x
-        </button>
-        <h2 className="mb-4 text-xl font-semibold ">{nickname} settings</h2>
+      <div className="rounded-lg">
+        <div className=" bg-red-500 p-4 ">
+          <button
+            onClick={() => navigateTo("/")}
+            className="float-right rounded bg-fire-brick p-2 font-bold  hover:bg-red-600 hover:text-white"
+            style={{ width: "2.5rem", height: "2.5rem" }}
+          >
+            x
+          </button>
+          <h2 className="mb-4 text-2xl font-semibold text-white ">
+            {nickname} settings
+          </h2>
+        </div>
 
         <div className="mx-auto mt-4 w-10/12 flex-row justify-center align-middle">
           <label htmlFor="breakDuration" className="block">
@@ -91,6 +95,7 @@ const UserSettings = () => {
             id="breakDuration"
             type="text"
             maxLength="2"
+            min="1"
             value={breakDuration}
             onChange={(e) => setBreakDuration(e.target.value)}
             className="mt-2 w-full rounded px-4 py-2"
@@ -125,17 +130,17 @@ const UserSettings = () => {
 
           <button
             onClick={updateSettings}
-            className="mt-4 inline-block rounded border-2 border-rose-700 px-4 py-2 text-xl font-bold leading-none hover:border-rose-900"
+            className="mt-4 inline-block rounded border-2 border-rose-700 px-4 py-2 text-xl font-bold leading-none hover:border-rose-900 hover:text-rose-900"
           >
             Update settings
           </button>
         </div>
-        <div className="flex justify-center">
+        <div className="mt-4 flex justify-center border-t-2 border-fire-brick">
           <button
             onClick={deleteAllData}
-            className="mt-4 inline-block rounded border-2 border-rose-700 px-4 py-2 text-xl font-bold leading-none hover:border-rose-900"
+            className="m-4 mt-4 inline-block rounded border-2 border-rose-700 p-4 px-4 py-2 text-xl font-bold leading-none hover:border-rose-900 hover:text-rose-900"
           >
-            Delete all data
+            Delete all your data
           </button>
         </div>
       </div>

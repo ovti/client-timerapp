@@ -218,7 +218,7 @@ const Timer = ({
 
   return (
     <>
-      <div className="mx-2 mt-4 rounded border-2 border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4">
+      <div className="mx-2 mt-4 rounded border-2 border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-4 lg:w-1/4">
         <div className="rounded-t-lg p-2 md:p-4">
           <div className="mb-4 flex items-center justify-between p-4">
             <button
@@ -347,16 +347,16 @@ const Timer = ({
               </p>
             </>
           )}
-          <div className="mt-4 flex items-center justify-between align-middle">
+          <div className="mt-4 flex items-center justify-between align-middle lg:w-full">
             <Link
               to="/sessions"
-              className="rounded bg-fire-brick p-2 text-white hover:bg-red-600 lg:px-4 lg:py-2"
+              className="rounded bg-fire-brick p-2 text-white hover:bg-red-600 lg:mr-2 lg:px-4 lg:py-2"
             >
               View all sessions
             </Link>
             <Link
               to="/completed-tasks"
-              className="rounded bg-fire-brick p-2 text-white hover:bg-red-600 lg:px-4 lg:py-2"
+              className=" rounded bg-fire-brick p-2 text-white hover:bg-red-600  lg:px-4 lg:py-2"
             >
               View completed tasks
             </Link>

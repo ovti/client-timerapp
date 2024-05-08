@@ -42,6 +42,7 @@ const Register = () => {
         <input
           type="text"
           placeholder="Username"
+          maxLength="16"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className="rounded border border-rose-300 p-2"
@@ -49,6 +50,7 @@ const Register = () => {
         <input
           type="password"
           placeholder="Password"
+          maxLength="64"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="rounded border border-rose-300 p-2"
@@ -56,13 +58,14 @@ const Register = () => {
         <input
           type="password"
           placeholder="Confirm Password"
+          maxLength="64"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           className="rounded border border-rose-300 p-2"
         />
         <button
           onClick={handleSubmit}
-          className="rounded bg-rose-700 p-2 text-white"
+          className="rounded bg-fire-brick p-2 font-semibold text-white hover:bg-red-600"
         >
           Register
         </button>

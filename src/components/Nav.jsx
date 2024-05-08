@@ -35,7 +35,7 @@ function Nav({ loggedIn, onLogout }) {
               <div className="flex justify-center text-2xl md:justify-end">
                 <Link
                   to="/settings"
-                  className="mr-2 mt-4 block lg:mt-2 lg:inline-block"
+                  className="mt-4 block hover:text-rose-900 lg:mr-4 lg:mt-3 lg:inline-block"
                 >
                   Settings
                 </Link>
@@ -46,7 +46,7 @@ function Nav({ loggedIn, onLogout }) {
             {loggedIn && (
               <button
                 onClick={onLogout}
-                className=" mt-4 inline-block rounded border-2 border-rose-700  px-4 py-2 text-xl font-bold leading-none  hover:border-rose-900  "
+                className=" mt-4 inline-block rounded border-2 border-rose-700  px-4 py-2 text-xl font-bold leading-none  hover:border-rose-900  hover:text-rose-900"
               >
                 Logout
               </button>

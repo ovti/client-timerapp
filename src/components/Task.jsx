@@ -55,13 +55,13 @@ const Task = ({
 
   return (
     <div
-      className={`m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-1/4 ${loaded ? "pop-in" : ""}`}
+      className={`m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-2 lg:w-1/4 ${loaded ? "pop-in" : ""}`}
     >
       {creatingTask ? (
         <div className="rounded-lg  p-4">
           <button
             onClick={() => setCreatingTask(false)}
-            className="float-right rounded bg-fire-brick p-2 font-bold  hover:bg-red-600"
+            className="float-right rounded bg-fire-brick p-2 font-bold hover:bg-red-600  hover:text-white"
             style={{ width: "2.5rem", height: "2.5rem" }}
           >
             x
@@ -73,7 +73,7 @@ const Task = ({
             className="mt-2 w-full rounded  px-4 py-2 "
             type="text"
             placeholder="Title"
-            maxLength="64"
+            maxLength="32"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -81,7 +81,7 @@ const Task = ({
           <div className="flex-row items-center justify-between">
             <select
               id="categorySelect"
-              className="mr-2 mt-4 rounded px-2 py-2 "
+              className="mr-2 mt-4 rounded px-2 py-2 lg:w-3/4 "
               type="text"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(Number(e.target.value))}
@@ -94,7 +94,7 @@ const Task = ({
               ))}
             </select>
             <button
-              className="mt-2 rounded bg-fire-brick px-3 py-1 font-bold  hover:bg-red-600"
+              className="mt-2 rounded bg-fire-brick px-3 py-1 font-bold hover:bg-red-600  hover:text-white"
               onClick={() => setCreatingCategory(true)}
             >
               +
@@ -116,7 +116,7 @@ const Task = ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
-          <p className="mt-2 ">Sessions needed to complete task</p>
+          <p className="mt-2 ">Sessions needed to complete task (1-99)</p>
           <input
             id="sessionsNeeded"
             className="mt-2 w-full rounded px-4 py-2 "
@@ -124,12 +124,13 @@ const Task = ({
             placeholder="Sessions needed"
             max="99"
             maxLength="2"
+            min="1"
             value={sessionsToComplete}
             onChange={(e) => setSessionsToComplete(Number(e.target.value))}
           />
           <button
             id="createTaskButton"
-            className="mt-4 rounded bg-fire-brick px-4 py-2  hover:bg-red-600"
+            className="mt-2 rounded bg-fire-brick p-2 font-semibold text-white hover:bg-red-600 lg:mr-2 lg:px-4 lg:py-2"
             onClick={addTask}
           >
             Create Task
@@ -137,38 +138,44 @@ const Task = ({
         </div>
       ) : (
         selectedTask !== 0 && (
-          <div className="rounded-lg border border-gray-300 p-4">
-            <button
-              onClick={() => setSelectedTask(0)}
-              className="float-right rounded bg-fire-brick p-2 font-bold hover:bg-red-600"
-              style={{ width: "2.5rem", height: "2.5rem" }}
-            >
-              x
-            </button>
-            <h2 className="mb-2 text-2xl font-bold">Current Task</h2>
-            <p className="text-l">
-              <b>Task:</b>{" "}
-              {userTasks.find((task) => task.id === selectedTask)?.title ||
-                "N/A"}
-            </p>
-            <p className="text-l">
-              <b>Category:</b>{" "}
-              {userTasks.find((task) => task.id === selectedTask)?.Category
-                .category || "N/A"}
-            </p>
-            <p className="text-l">
-              <b>Description:</b>{" "}
-              {userTasks.find((task) => task.id === selectedTask)
-                ?.description || "N/A"}
-            </p>
-            <p className="text-l">
-              <b>Sessions to complete:</b>{" "}
-              {userTasks.find((task) => task.id === selectedTask)
-                ?.sessionCount || "0"}{" "}
-              /{" "}
-              {userTasks.find((task) => task.id === selectedTask)
-                ?.sessionsToComplete || "0"}
-            </p>
+          <div className="rounded-lg  ">
+            <div className="w-full bg-red-500 p-4 ">
+              <button
+                onClick={() => setSelectedTask(0)}
+                className="float-right rounded bg-fire-brick p-2 font-bold hover:bg-red-600  hover:text-white"
+                style={{ width: "2.5rem", height: "2.5rem" }}
+              >
+                x
+              </button>
+              <h2 className="mb-2 text-2xl font-semibold text-white">
+                Current Task
+              </h2>
+            </div>
+            <div className="p-4">
+              <p className="text-xl">
+                <b>Task:</b>{" "}
+                {userTasks.find((task) => task.id === selectedTask)?.title ||
+                  "N/A"}
+              </p>{" "}
+              <p className="text-xl">
+                <b>Category:</b>{" "}
+                {userTasks.find((task) => task.id === selectedTask)?.Category
+                  .category || "N/A"}
+              </p>
+              <p className="text-xl">
+                <b>Description:</b>{" "}
+                {userTasks.find((task) => task.id === selectedTask)
+                  ?.description || "N/A"}
+              </p>
+              <p className="text-xl">
+                <b>Sessions to complete:</b>{" "}
+                {userTasks.find((task) => task.id === selectedTask)
+                  ?.sessionCount || "0"}{" "}
+                /{" "}
+                {userTasks.find((task) => task.id === selectedTask)
+                  ?.sessionsToComplete || "0"}
+              </p>
+            </div>
           </div>
         )
       )}

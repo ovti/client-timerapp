@@ -52,7 +52,7 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
     >
       <button
         onClick={() => setCreatingCategory(false)}
-        className="float-right rounded bg-fire-brick p-2 font-bold text-white hover:bg-red-600"
+        className="float-right rounded bg-fire-brick p-2 font-bold hover:bg-red-600 hover:text-white"
         style={{ width: "2.5rem", height: "2.5rem" }}
       >
         x
@@ -64,12 +64,14 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
             <input
               type="text"
               value={newCategory}
+              minLength="3"
+              maxLength="16"
               onChange={(e) => setNewCategory(e.target.value)}
               placeholder="New Category"
               className="mr-2 rounded border  p-2  focus:outline-none"
             />
             <button
-              className="mt-4 rounded bg-fire-brick px-4 py-2 font-bold text-white hover:bg-blue-600"
+              className="mt-4 rounded bg-fire-brick px-4 py-2 font-bold  hover:bg-red-600  hover:text-white"
               onClick={addCategory}
             >
               +
