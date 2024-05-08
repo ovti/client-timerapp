@@ -14,6 +14,12 @@ function App() {
   const userId = localStorage.getItem("userId");
   const navigateTo = useNavigate();
 
+  window.onerror = function (message) {
+    if (message.includes("There is no interval scheduled with the given id")) {
+      return true;
+    }
+  };
+
   const {
     categories,
     sessions,

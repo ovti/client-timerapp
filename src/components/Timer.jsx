@@ -6,6 +6,7 @@ import axios from "axios";
 import Task from "./Task";
 import bell from "/src/assets/bell.mp3";
 import alarm from "/src/assets/alarm.mp3";
+import { clearInterval, setInterval } from "worker-timers";
 
 const Timer = ({
   id,

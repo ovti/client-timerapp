@@ -17,7 +17,7 @@ const Task = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("None");
   const [sessionsToComplete, setSessionsToComplete] = useState(1);
   const [creatingCategory, setCreatingCategory] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -43,7 +43,7 @@ const Task = ({
       setCreatingTask(false);
       setSelectedTask(0);
       setTitle("");
-      setDescription("");
+      setDescription("None");
       setSessionsToComplete(1);
       setSelectedCategory(0);
       fetchTasks();
