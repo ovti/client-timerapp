@@ -224,7 +224,10 @@ const Timer = ({
             <button
               id="startPauseTimer"
               // className="m-2 rounded border border-fire-brick px-4 py-2 font-bold"
-              className={`m-2 rounded border-fire-brick px-4 py-2 font-bold ${
+              className={`m-2 
+              rounded
+              border-fire-brick
+              px-4 py-2 font-bold hover:bg-red-600 hover:text-white ${
                 isTimerRunning ? "border-2" : "border"
               }`}
               onClick={isTimerRunning ? pauseTimer : startTimer}
@@ -240,7 +243,10 @@ const Timer = ({
             <button
               id="startBreak"
               // className="rounded border border-fire-brick px-4 py-2 font-bold "
-              className={`m-2 rounded border-fire-brick px-4 py-2 font-bold ${
+              className={`m-2 
+              rounded
+              border-fire-brick
+              px-4 py-2 font-bold hover:bg-red-600 hover:text-white ${
                 isBreak ? "border-2" : "border"
               }`}
               onClick={startBreak}
@@ -250,7 +256,7 @@ const Timer = ({
 
             <button
               id="resetTimer"
-              className="m-2 rounded border border-fire-brick px-4 py-2 font-bold"
+              className="m-2 rounded border border-fire-brick px-4 py-2 font-bold hover:bg-red-600 hover:text-white"
               onClick={() => {
                 clearInterval(timer);
                 setTimer(null);
