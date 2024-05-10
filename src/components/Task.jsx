@@ -150,28 +150,29 @@ const Task = ({
               </h2>
             </div>
             <div className="p-4">
-              <p className="text-xl">
-                <b>Task:</b>{" "}
+              <p className="break-words text-2xl font-bold">
                 {userTasks.find((task) => task.id === selectedTask)?.title ||
                   "N/A"}
               </p>{" "}
-              <p className="text-xl">
-                <b>Category:</b>{" "}
-                {userTasks.find((task) => task.id === selectedTask)?.Category
-                  .category || "N/A"}
-              </p>
-              <p className="text-xl">
+              <div className="my-2 flex items-center justify-between align-middle">
+                <p className="text-l ">
+                  <b>Category:</b>{" "}
+                  {userTasks.find((task) => task.id === selectedTask)?.Category
+                    .category || "N/A"}
+                </p>
+                <p className="text-l ">
+                  <b>Sessions:</b>{" "}
+                  {userTasks.find((task) => task.id === selectedTask)
+                    ?.sessionCount || "0"}{" "}
+                  /{" "}
+                  {userTasks.find((task) => task.id === selectedTask)
+                    ?.sessionsToComplete || "0"}
+                </p>
+              </div>
+              <p className="text-l h-auto overflow-auto break-words  ">
                 <b>Description:</b>{" "}
                 {userTasks.find((task) => task.id === selectedTask)
                   ?.description || "N/A"}
-              </p>
-              <p className="text-xl">
-                <b>Sessions to complete:</b>{" "}
-                {userTasks.find((task) => task.id === selectedTask)
-                  ?.sessionCount || "0"}{" "}
-                /{" "}
-                {userTasks.find((task) => task.id === selectedTask)
-                  ?.sessionsToComplete || "0"}
               </p>
             </div>
           </div>

@@ -19,23 +19,47 @@ function Nav({ loggedIn, onLogout }) {
               <div className="flex justify-center text-2xl md:justify-end">
                 <Link
                   to="/login"
-                  className="mr-4 mt-4 block   lg:mt-0 lg:inline-block"
+                  className="mr-4 mt-4 block   hover:text-rose-900 lg:mt-0 lg:inline-block"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="mr-4 mt-4 block   lg:mt-0 lg:inline-block"
+                  className="mr-4 mt-4 block   hover:text-rose-900 lg:mt-0 lg:inline-block"
                 >
                   Register
                 </Link>
+                <Link
+                  to="/info"
+                  className="mr-4 mt-4 block   hover:text-rose-900 lg:mt-0 lg:inline-block"
+                >
+                  Info
+                </Link>
               </div>
             )}
+
+            {loggedIn && (
+              <div className="flex justify-center text-2xl sm:hidden md:justify-end">
+                <Link
+                  to="/info"
+                  className="mt-2 block hover:text-rose-900 lg:mr-4 lg:mt-3 lg:inline-block"
+                >
+                  Info
+                </Link>
+              </div>
+            )}
+
             {loggedIn && (
               <div className="flex justify-center text-2xl md:justify-end">
                 <Link
+                  to="/info"
+                  className=" mt-2 hidden hover:text-rose-900 sm:block lg:mr-4 lg:mt-3 lg:inline-block"
+                >
+                  Info
+                </Link>
+                <Link
                   to="/settings"
-                  className="mt-4 block hover:text-rose-900 lg:mr-4 lg:mt-3 lg:inline-block"
+                  className="mt-2 block hover:text-rose-900 lg:mr-4 lg:mt-3 lg:inline-block"
                 >
                   Settings
                 </Link>

@@ -81,6 +81,10 @@ const Timer = ({
   ]);
 
   const startTimer = () => {
+    if (selectedTask === 0) {
+      toast.error("Please select a task");
+      return;
+    }
     if (
       userTasks.find((task) => task.id === selectedTask).sessionCount ===
       userTasks.find((task) => task.id === selectedTask).sessionsToComplete
@@ -231,7 +235,6 @@ const Timer = ({
                 isTimerRunning ? "border-2" : "border"
               }`}
               onClick={isTimerRunning ? pauseTimer : startTimer}
-              disabled={selectedTask === 0}
             >
               {isTimerRunning
                 ? paused

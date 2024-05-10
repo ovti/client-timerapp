@@ -6,6 +6,7 @@ import Login from "./Login";
 import Sessions from "./Sessions";
 import CompletedTasks from "./CompletedTasks";
 import UserSettings from "./UserSettings";
+import Info from "./Info";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const Router = () => {
         {
           path: "/settings",
           element: <UserSettings />,
+        },
+        {
+          path: "/info",
+          element: <Info />,
         },
       ],
     },
