@@ -89,11 +89,11 @@ const UserSettings = () => {
 
         <div className="mx-auto mt-4 w-10/12 flex-row justify-center align-middle">
           <label htmlFor="breakDuration" className="block">
-            Break duration
+            Break duration (minutes)
           </label>
           <input
             id="breakDuration"
-            type="text"
+            type="number"
             maxLength="2"
             min="1"
             value={breakDuration}
@@ -102,7 +102,7 @@ const UserSettings = () => {
           />
 
           <label htmlFor="alarmSound" className="mt-4 block">
-            Alarm sound
+            Alarm sound on session end
           </label>
           <select
             id="alarmSound"
@@ -116,7 +116,7 @@ const UserSettings = () => {
           </select>
 
           <label htmlFor="autoResume" className="mt-4 block">
-            Auto resume
+            Auto resume after break
           </label>
           <select
             id="autoResume"

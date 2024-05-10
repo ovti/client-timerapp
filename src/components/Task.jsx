@@ -122,10 +122,8 @@ const Task = ({
             className="mt-2 w-full rounded px-4 py-2 "
             type="number"
             placeholder="Sessions needed"
-            max="99"
             maxLength="2"
             min="1"
-            value={sessionsToComplete}
             onChange={(e) => setSessionsToComplete(Number(e.target.value))}
           />
           <button

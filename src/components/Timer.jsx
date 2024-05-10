@@ -313,10 +313,10 @@ const Timer = ({
           <input
             id="customDuration"
             className="0 mt-4 w-full rounded px-4 py-2 "
-            type="text"
+            type="number"
             placeholder="Custom duration in minutes"
             maxLength="2"
-            // value={selectedDuration}
+            min="1"
             onChange={(e) => setSelectedDuration(Number(e.target.value))}
           />
           <select
