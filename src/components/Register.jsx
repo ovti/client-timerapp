@@ -11,6 +11,7 @@ const Register = () => {
   const navigateTo = useNavigate();
 
   const API_URL = import.meta.env.VITE_BASE_API_URL;
+  const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
 
   const handleSubmit = async () => {
     try {
@@ -27,7 +28,7 @@ const Register = () => {
         setError("Passwords do not match");
       } else {
         toast.success("Registration successful");
-        navigateTo("/login");
+        navigateTo(PATH_URL + "/login");
       }
     } catch (err) {
       toast.error("Registration failed");

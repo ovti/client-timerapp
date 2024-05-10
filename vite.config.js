@@ -8,6 +8,6 @@ export default defineConfig({
 });
 
 // export default defineConfig({
-//   base: '/~21_zalubski/timer-app/',
+//   base: "/~21_zalubski/timer-app/",
 //   plugins: [react()],
 // });

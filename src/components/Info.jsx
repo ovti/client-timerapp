@@ -2,13 +2,14 @@ import { useNavigate } from "react-router-dom";
 
 const Info = () => {
   const navigateTo = useNavigate();
+  const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
 
   return (
     <div className="m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-5/12">
       <div className="rounded-lg">
         <div className=" h-16 bg-red-500 p-4 ">
           <button
-            onClick={() => navigateTo("/")}
+            onClick={() => navigateTo(PATH_URL + "/")}
             className="float-right rounded bg-fire-brick p-2 font-bold  hover:bg-red-600 hover:text-white"
             style={{ width: "2.5rem", height: "2.5rem" }}
           >

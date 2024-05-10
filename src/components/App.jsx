@@ -14,6 +14,8 @@ function App() {
   const userId = localStorage.getItem("userId");
   const navigateTo = useNavigate();
 
+  const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
+
   window.onerror = function (message) {
     if (message.includes("There is no interval scheduled with the given id")) {
       return true;
@@ -49,7 +51,7 @@ function App() {
     localStorage.removeItem("nickname");
     setLoggedIn(false);
     toast.success("Logout successful");
-    navigateTo("/");
+    navigateTo(PATH_URL + "/");
   };
 
   useEffect(() => {

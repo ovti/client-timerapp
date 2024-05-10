@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const API_URL = import.meta.env.VITE_BASE_API_URL;
+const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
 
 const UserSettings = () => {
   const {
@@ -40,7 +41,7 @@ const UserSettings = () => {
       fetchTasks();
       fetchSettings();
       toast.success("User data deleted");
-      navigateTo("/");
+      navigateTo(PATH_URL + "/");
     } catch (error) {
       toast.error("Error deleting user data");
       console.error("Error deleting user data:", error);
@@ -76,7 +77,7 @@ const UserSettings = () => {
       <div className="rounded-lg">
         <div className=" bg-red-500 p-4 ">
           <button
-            onClick={() => navigateTo("/")}
+            onClick={() => navigateTo(PATH_URL + "/")}
             className="float-right rounded bg-fire-brick p-2 font-bold  hover:bg-red-600 hover:text-white"
             style={{ width: "2.5rem", height: "2.5rem" }}
           >

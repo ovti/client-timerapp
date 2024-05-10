@@ -38,6 +38,7 @@ const Timer = ({
   const [breakTimer, setBreakTimer] = useState(null);
 
   const API_URL = import.meta.env.VITE_BASE_API_URL;
+  const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
 
   const saveTimerSession = useCallback(async () => {
     try {
@@ -358,13 +359,13 @@ const Timer = ({
           )}
           <div className="mt-4 flex items-center justify-between align-middle lg:w-full">
             <Link
-              to="/sessions"
+              to={PATH_URL + "/sessions"}
               className="rounded bg-fire-brick p-2 text-white hover:bg-red-600 lg:mr-2 lg:px-4 lg:py-2"
             >
               View all sessions
             </Link>
             <Link
-              to="/completed-tasks"
+              to={PATH_URL + "/completed-tasks"}
               className=" rounded bg-fire-brick p-2 text-white hover:bg-red-600  lg:px-4 lg:py-2"
             >
               View completed tasks

@@ -12,7 +12,7 @@ const CompletedTasks = () => {
   const navigateTo = useNavigate();
 
   const API_URL = import.meta.env.VITE_BASE_API_URL;
-
+  const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
 
   const deleteTask = async (id) => {
     try {
@@ -100,7 +100,7 @@ const CompletedTasks = () => {
       <div className="m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-5/12">
         <div className="bg-red-500 p-4">
           <button
-            onClick={() => navigateTo("/")}
+            onClick={() => navigateTo(PATH_URL + "/")}
             className="float-right rounded bg-fire-brick p-2 font-bold text-white hover:bg-red-600"
             style={{ width: "2.5rem", height: "2.5rem" }}
           >

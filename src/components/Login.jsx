@@ -10,6 +10,7 @@ const Login = () => {
   const handleLogin = useOutletContext().handleLogin;
 
   const API_URL = import.meta.env.VITE_BASE_API_URL;
+  const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const Login = () => {
       localStorage.setItem("nickname", response.data.nickname);
       console.log("Login successful:", response.data);
       handleLogin();
-      navigateTo("/");
+      navigateTo(PATH_URL + "/");
     } catch (error) {
       toast.error("Login failed");
       console.error("Login failed:", error);
