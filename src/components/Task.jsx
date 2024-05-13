@@ -53,6 +53,12 @@ const Task = ({
     }
   };
 
+  useEffect(() => {
+    if (userCategories.length > 0) {
+      setSelectedCategory(userCategories[userCategories.length - 1]?.id);
+    }
+  }, [userCategories]);
+
   return (
     <div
       className={`m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-2 lg:w-1/4 ${loaded ? "pop-in" : ""}`}
