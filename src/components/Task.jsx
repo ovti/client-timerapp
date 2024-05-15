@@ -14,6 +14,7 @@ const Task = ({
   setSelectedTask,
   creatingTask,
   setCreatingTask,
+  fetchSessions,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [title, setTitle] = useState("");
@@ -21,12 +22,11 @@ const Task = ({
   const [sessionsToComplete, setSessionsToComplete] = useState(1);
   const [creatingCategory, setCreatingCategory] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [editingTask, setEditingTask] = useState(false);
+  const [editDescription, setEditDescription] = useState("");
+  const [editSessionsToComplete, setEditSessionsToComplete] = useState(1);
 
   const API_URL = import.meta.env.VITE_BASE_API_URL;
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
 
   const addTask = async () => {
     try {
@@ -52,6 +52,70 @@ const Task = ({
       console.error("Error saving category:", error);
     }
   };
+
+  const editTask = async () => {
+    if (
+      editSessionsToComplete <=
+      userTasks.find((task) => task.id === selectedTask)?.sessionCount
+    ) {
+      toast.error(
+        "Sessions to complete cannot be less than sessions already completed",
+      );
+      return;
+    }
+
+    try {
+      await axios.put(
+        `${API_URL}/task/${selectedTask}/${editDescription}/${editSessionsToComplete}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      toast.success("Task updated");
+      setEditingTask(false);
+      fetchTasks();
+    } catch (error) {
+      toast.error("Error updating task");
+      console.error("Error updating task:", error);
+    }
+  };
+
+  const deleteTask = async (taskId) => {
+    try {
+      await axios.delete(`${API_URL}/task/${taskId}/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      toast.success("Task deleted");
+      setSelectedTask(0);
+      fetchSessions();
+      fetchTasks();
+    } catch (error) {
+      toast.error("Error deleting task");
+      console.error("Error deleting task:", error);
+    }
+  };
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (selectedTask !== 0) {
+      const task = userTasks.find((task) => task.id === selectedTask);
+      if (task) {
+        setEditDescription(task.description);
+        setEditSessionsToComplete(task.sessionsToComplete);
+      }
+    }
+  }, [selectedTask, userTasks]);
+
+  useEffect(() => {
+    setEditingTask(false);
+  }, [selectedTask]);
 
   useEffect(() => {
     if (userCategories.length > 0) {
@@ -156,17 +220,17 @@ const Task = ({
               </h2>
             </div>
             <div className="p-4">
-              <p className="break-words text-2xl font-bold">
+              <p className="break-words text-4xl font-bold">
                 {userTasks.find((task) => task.id === selectedTask)?.title ||
                   "N/A"}
-              </p>{" "}
-              <div className="my-2 flex items-center justify-between align-middle">
-                <p className="text-l ">
+              </p>
+              <div className="my-2 flex items-center align-middle">
+                <p className="text-l">
                   <b>Category:</b>{" "}
                   {userTasks.find((task) => task.id === selectedTask)?.Category
                     .category || "N/A"}
                 </p>
-                <p className="text-l ">
+                <p className="text-l p-2">
                   <b>Sessions:</b>{" "}
                   {userTasks.find((task) => task.id === selectedTask)
                     ?.sessionCount || "0"}{" "}
@@ -175,11 +239,69 @@ const Task = ({
                     ?.sessionsToComplete || "0"}
                 </p>
               </div>
-              <p className="text-l h-auto overflow-auto break-words  ">
-                <b>Description:</b>{" "}
-                {userTasks.find((task) => task.id === selectedTask)
-                  ?.description || "N/A"}
-              </p>
+              {editingTask ? (
+                <div>
+                  <p className="mt-2 ">
+                    Sessions needed to complete task (1-99)
+                  </p>
+                  <input
+                    id="editSessionsNeeded"
+                    className="mt-2 w-full rounded px-4 py-2"
+                    type="number"
+                    placeholder="Sessions needed"
+                    maxLength="2"
+                    min="1"
+                    onChange={(e) =>
+                      setEditSessionsToComplete(Number(e.target.value))
+                    }
+                  />
+                  <p className="mt-2 ">Description</p>
+                  <textarea
+                    id="editDescription"
+                    maxLength="64"
+                    className="mt-2 w-full resize-none rounded px-4 py-2"
+                    placeholder="Description"
+                    value={editDescription}
+                    onChange={(e) => setEditDescription(e.target.value)}
+                  ></textarea>
+                  <button
+                    className="mt-2 rounded bg-fire-brick p-2 font-semibold text-white hover:bg-red-600"
+                    onClick={editTask}
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              ) : (
+                <p className="mt-2 h-auto overflow-auto break-words text-xl ">
+                  <b>Description:</b>{" "}
+                  {userTasks.find((task) => task.id === selectedTask)
+                    ?.description || "N/A"}
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-center justify-end border-t-2 p-4">
+              {editingTask ? (
+                <button
+                  className="mr-2 rounded bg-gray-500 p-2 font-semibold text-white hover:bg-gray-600"
+                  onClick={() => setEditingTask(false)}
+                >
+                  Cancel
+                </button>
+              ) : (
+                <button
+                  className="mr-2 rounded bg-fire-brick p-2 font-semibold text-white hover:bg-red-600"
+                  onClick={() => setEditingTask(true)}
+                >
+                  Edit Task
+                </button>
+              )}
+              <button
+                className="rounded bg-fire-brick p-2 font-semibold text-white hover:bg-red-600"
+                onClick={() => deleteTask(selectedTask)}
+              >
+                Delete Task
+              </button>
             </div>
           </div>
         )
@@ -215,6 +337,7 @@ Task.propTypes = {
   setSelectedTask: PropTypes.func.isRequired,
   creatingTask: PropTypes.bool.isRequired,
   setCreatingTask: PropTypes.func.isRequired,
+  fetchSessions: PropTypes.func.isRequired,
 };
 
 export default Task;

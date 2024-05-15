@@ -394,6 +394,7 @@ const Timer = ({
         setSelectedTask={setSelectedTask}
         creatingTask={creatingTask}
         setCreatingTask={setCreatingTask}
+        fetchSessions={fetchSessions}
       />
     </>
   );

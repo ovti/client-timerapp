@@ -89,7 +89,7 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
               <span className="mx-3 text-lg ">{category.category}</span>
               <button
                 onClick={() => deleteCategory(category.id)}
-                className="font-bold hover:text-red-500"
+                className="text-lg font-bold hover:text-red-500"
               >
                 x
               </button>
