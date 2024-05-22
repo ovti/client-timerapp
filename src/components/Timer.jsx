@@ -221,6 +221,20 @@ const Timer = ({
     }
   }, [isBreak, currentBreak, breakTimer, selectedTask]);
 
+  useEffect(() => {
+    if (selectedTask === 0) {
+      clearInterval(timer);
+      setTimer(null);
+      setIsTimerRunning(false);
+      setCurrentTimer(0);
+      setProgress(0);
+      setRemainingTime(0);
+      setPaused(false);
+      setIsBreak(false);
+      setCurrentBreak(0);
+    }
+  }, [selectedTask, timer]);
+
   return (
     <>
       <div className="mx-2 mt-4 rounded border-2 border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-4 lg:w-1/4">
