@@ -95,6 +95,9 @@ const Timer = ({
   ]);
 
   const startTimer = () => {
+    if (selectedTask === 0) {
+      toast.info("Starting timer without a task. Session will not be saved.");
+    }
     if (isBreak && breakTimer) {
       clearInterval(breakTimer);
       setBreakTimer(null);

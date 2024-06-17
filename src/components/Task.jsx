@@ -25,22 +25,26 @@ const Task = ({
   const [editingTask, setEditingTask] = useState(false);
   const [editDescription, setEditDescription] = useState("");
   const [editSessionsToComplete, setEditSessionsToComplete] = useState(1);
+  const [error, setError] = useState("");
 
   const API_URL = import.meta.env.VITE_BASE_API_URL;
 
   const addTask = async () => {
     if (title.length < 3 || title.length > 32) {
       toast.error("Title must be between 3 and 32 characters long");
+      setError("Title must be between 3 and 32 characters long");
       return;
     }
 
     if (sessionsToComplete < 1 || sessionsToComplete > 99) {
       toast.error("Sessions to complete must be between 1 and 99");
+      setError("Sessions to complete must be between 1 and 99");
       return;
     }
 
     if (selectedCategory === 0) {
       toast.error("Select a category for this task");
+      setError("Select a category for this task");
       return;
     }
 
@@ -55,6 +59,7 @@ const Task = ({
         },
       );
       toast.success("Task added");
+      setError("");
       setCreatingTask(false);
       setSelectedTask(0);
       setTitle("");
@@ -152,6 +157,8 @@ const Task = ({
             x
           </button>
           <h2 className="mb-4 text-4xl font-semibold ">Create Task</h2>
+          {error && <p className="text-red-500">{error}</p>}
+
           <p className="">Title</p>
           <input
             id="title"
