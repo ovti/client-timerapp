@@ -66,7 +66,7 @@ function App() {
         handleLogin={handleLogin}
       />
       <ToastContainer
-        autoClose={2000}
+        autoClose={5000}
         limit={3}
         draggable
         draggablePercent={60}

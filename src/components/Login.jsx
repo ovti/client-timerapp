@@ -14,6 +14,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (username.length < 3 || username.length > 16) {
+      toast.error("Username must be between 3 and 16 characters long");
+      return;
+    }
+
+    if (password.length < 3 || password.length > 64) {
+      toast.error("Password must be between 3 and 64 characters long");
+      return;
+    }
+
     try {
       const response = await axios.post(`${API_URL}/login`, {
         username,

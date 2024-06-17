@@ -15,6 +15,10 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
   }, []);
 
   const addCategory = async () => {
+    if (newCategory.length < 3 || newCategory.length > 16) {
+      toast.error("Category name must beetwen 3 and 16 characters");
+      return;
+    }
     try {
       await axios.post(`${API_URL}/category/${userId}/${newCategory}`, null, {
         headers: {

@@ -14,24 +14,48 @@ const Register = () => {
   const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
 
   const handleSubmit = async () => {
+    if (username.length < 3 || username.length > 16) {
+      toast.error("Username must be between 3 and 16 characters long");
+      return;
+    }
+
+    if (password.length < 3 || password.length > 64) {
+      toast.error("Password must be between 3 and 64 characters long");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     try {
       const response = await axios.post(`${API_URL}/signup`, {
         username,
         password,
         confirmPassword,
       });
-      if (response.status === 400) {
-        toast.error("User already exists");
-        setError("User already exists");
-      } else if (response.status === 401) {
-        toast.error("Passwords do not match");
-        setError("Passwords do not match");
-      } else {
-        toast.success("Registration successful");
-        navigateTo(PATH_URL + "/login");
-      }
+      toast.success("Registration successful");
+      navigateTo(PATH_URL + "/login");
     } catch (err) {
-      toast.error("Registration failed");
+      if (err.response) {
+        if (err.response.status === 400) {
+          toast.error("User already exists");
+          setError("User already exists");
+        } else if (err.response.status === 401) {
+          toast.error("Passwords do not match");
+          setError("Passwords do not match");
+        } else {
+          toast.error("Registration failed");
+          setError("Registration failed");
+        }
+      } else if (err.request) {
+        toast.error("No response from server");
+        setError("No response from server");
+      } else {
+        toast.error("Registration failed");
+        setError("Registration failed");
+      }
       console.error(err);
     }
   };

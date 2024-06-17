@@ -41,6 +41,20 @@ const Timer = ({
   const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
 
   const saveTimerSession = useCallback(async () => {
+    if (selectedTask === 0) {
+      toast.info("Session ended without saving");
+      if (userSettings.alarmSound === "bell") {
+        const audio = new Audio(bell);
+        audio.play();
+      } else if (userSettings.alarmSound === "alarm") {
+        const audio = new Audio(alarm);
+        audio.play();
+      } else if (userSettings.alarmSound === "none") {
+        // do nothing
+      }
+      return;
+    }
+
     try {
       const response = await axios.post(
         `${API_URL}/saveTimerSession/${userId}/${selectedDuration}/${selectedTask}`,
@@ -53,8 +67,7 @@ const Timer = ({
       );
       toast.success("Timer session saved");
       console.log(response);
-      // const audio = new Audio(bell);
-      // audio.play();
+
       if (userSettings.alarmSound === "bell") {
         const audio = new Audio(bell);
         audio.play();
@@ -82,17 +95,6 @@ const Timer = ({
   ]);
 
   const startTimer = () => {
-    if (selectedTask === 0) {
-      toast.error("Please select a task");
-      return;
-    }
-    if (
-      userTasks.find((task) => task.id === selectedTask).sessionCount ===
-      userTasks.find((task) => task.id === selectedTask).sessionsToComplete
-    ) {
-      toast.error("Task already completed");
-      return;
-    }
     if (isBreak && breakTimer) {
       clearInterval(breakTimer);
       setBreakTimer(null);
@@ -101,7 +103,6 @@ const Timer = ({
 
     setIsTimerRunning(true);
     const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
-    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
     setCurrentTimer(startTime);
     if (remainingTime === 0) {
       setProgress(0);
@@ -216,24 +217,10 @@ const Timer = ({
   };
 
   useEffect(() => {
-    if (!isBreak && currentBreak === 0 && breakTimer && selectedTask !== 0) {
+    if (!isBreak && currentBreak === 0 && breakTimer) {
       handleUnpauseAfterBreak();
     }
-  }, [isBreak, currentBreak, breakTimer, selectedTask]);
-
-  useEffect(() => {
-    if (selectedTask === 0) {
-      clearInterval(timer);
-      setTimer(null);
-      setIsTimerRunning(false);
-      setCurrentTimer(0);
-      setProgress(0);
-      setRemainingTime(0);
-      setPaused(false);
-      setIsBreak(false);
-      setCurrentBreak(0);
-    }
-  }, [selectedTask, timer]);
+  }, [isBreak, currentBreak, breakTimer]);
 
   return (
     <>
@@ -242,7 +229,6 @@ const Timer = ({
           <div className="mb-4 flex items-center justify-between p-4">
             <button
               id="startPauseTimer"
-              // className="m-2 rounded border border-fire-brick px-4 py-2 font-bold"
               className={`m-2 
               rounded
               border-fire-brick
@@ -260,7 +246,6 @@ const Timer = ({
 
             <button
               id="startBreak"
-              // className="rounded border border-fire-brick px-4 py-2 font-bold "
               className={`m-2 
               rounded
               border-fire-brick

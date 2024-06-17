@@ -49,6 +49,10 @@ const UserSettings = () => {
   };
 
   const updateSettings = async () => {
+    if (breakDuration < 1 || breakDuration > 99) {
+      toast.error("Break duration must be between 1 and 99 minutes");
+      return;
+    }
     try {
       await axios.put(
         `${API_URL}/settings/${id}/${breakDuration}/${alarmSound}/${autoResume}`,
