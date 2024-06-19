@@ -104,8 +104,8 @@ const Timer = ({
     }
 
     setIsTimerRunning(true);
-    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
-    const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
+    const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
+    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
 
     setCurrentTimer(startTime);
     if (remainingTime === 0) {
