@@ -17,6 +17,7 @@ const UserSettings = () => {
     fetchSettings,
   } = useOutletContext();
   const navigateTo = useNavigate();
+  const [error, setError] = useState("");
 
   const [breakDuration, setBreakDuration] = useState(
     settings ? settings.breakDuration : 5,
@@ -51,6 +52,7 @@ const UserSettings = () => {
   const updateSettings = async () => {
     if (breakDuration < 1 || breakDuration > 99) {
       toast.error("Break duration must be between 1 and 99 minutes");
+      setError("Break duration must be between 1 and 99 minutes");
       return;
     }
     try {
@@ -64,6 +66,7 @@ const UserSettings = () => {
       );
       fetchSettings();
       toast.success("Settings updated");
+      setError("");
     } catch (error) {
       toast.error("Error updating settings");
       console.error("Error updating settings:", error);
@@ -93,6 +96,8 @@ const UserSettings = () => {
         </div>
 
         <div className="mx-auto mt-4 w-10/12 flex-row justify-center align-middle">
+          {error && <p className="text-red-500">{error}</p>}
+
           <label htmlFor="breakDuration" className="block">
             Break duration (minutes)
           </label>

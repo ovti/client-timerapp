@@ -77,7 +77,6 @@ const Timer = ({
       } else if (userSettings.alarmSound === "none") {
         // do nothing
       }
-
       fetchTasks();
       fetchSessions();
     } catch (error) {
@@ -105,7 +104,9 @@ const Timer = ({
     }
 
     setIsTimerRunning(true);
-    const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
+    // const startTime = remainingTime > 0 ? remainingTime : selectedDuration * 60;
+    const startTime = remainingTime > 0 ? remainingTime : selectedDuration;
+
     setCurrentTimer(startTime);
     if (remainingTime === 0) {
       setProgress(0);
@@ -225,6 +226,13 @@ const Timer = ({
     }
   }, [isBreak, currentBreak, breakTimer]);
 
+  const handleCustomDurationChange = (e) => {
+    const value = e.target.value;
+    if (/^\d{0,2}$/.test(value) && value >= 1 && value <= 99) {
+      setSelectedDuration(Number(value));
+    }
+  };
+
   return (
     <>
       <div className="mx-2 mt-4 rounded border-2 border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-4 lg:w-1/4">
@@ -275,6 +283,8 @@ const Timer = ({
                 setPaused(false);
                 setIsBreak(false);
                 setCurrentBreak(0);
+                clearInterval(breakTimer);
+                setBreakTimer(null);
                 toast.success("Timer has been reset");
               }}
             >
@@ -318,12 +328,12 @@ const Timer = ({
 
           <input
             id="customDuration"
-            className="0 mt-4 w-full rounded px-4 py-2 "
+            className="mt-4 w-full rounded px-4 py-2 "
             type="number"
             placeholder="Custom duration in minutes"
-            maxLength="2"
-            min="1"
-            onChange={(e) => setSelectedDuration(Number(e.target.value))}
+            inputMode="numeric"
+            pattern="[0-9]*"
+            onChange={handleCustomDurationChange}
           />
           <select
             id="taskSelect"

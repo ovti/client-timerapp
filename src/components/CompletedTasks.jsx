@@ -101,7 +101,7 @@ const CompletedTasks = () => {
         <div className="bg-red-500 p-4">
           <button
             onClick={() => navigateTo(PATH_URL + "/")}
-            className="float-right rounded bg-fire-brick p-2 font-bold text-white hover:bg-red-600"
+            className="float-right rounded bg-fire-brick p-2 font-bold  hover:bg-red-600 hover:text-white"
             style={{ width: "2.5rem", height: "2.5rem" }}
           >
             x

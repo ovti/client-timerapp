@@ -3,10 +3,17 @@ import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
+const Categories = ({
+  setCreatingCategory,
+  categories,
+  fetchCategories,
+  fetchSessions,
+  fetchTasks,
+}) => {
   const [newCategory, setNewCategory] = useState("");
   const userId = localStorage.getItem("userId");
   const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState("");
 
   const API_URL = import.meta.env.VITE_BASE_API_URL;
 
@@ -17,6 +24,7 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
   const addCategory = async () => {
     if (newCategory.length < 3 || newCategory.length > 16) {
       toast.error("Category name must beetwen 3 and 16 characters");
+      setError("Category name must beetwen 3 and 16 characters");
       return;
     }
     try {
@@ -29,6 +37,7 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
       setCreatingCategory(false);
       fetchCategories();
       setNewCategory("");
+      setError("");
     } catch (error) {
       toast.error("Error saving category");
       console.error("Error saving category:", error);
@@ -42,7 +51,10 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+
       toast.success("Category deleted");
+      fetchTasks();
+      fetchSessions();
       fetchCategories();
     } catch (error) {
       toast.error("Error deleting category");
@@ -64,7 +76,10 @@ const Categories = ({ setCreatingCategory, categories, fetchCategories }) => {
       <div className="">
         <div className="flex-column items-center justify-between px-4">
           <h1 className="text-4xl font-bold">Categories</h1>
+
           <div className="mt-2 flex-row">
+            {error && <p className="text-red-500">{error}</p>}
+
             <input
               type="text"
               value={newCategory}

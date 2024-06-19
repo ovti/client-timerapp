@@ -36,6 +36,12 @@ const Task = ({
       return;
     }
 
+    if (description.length < 3 || description.length > 64) {
+      toast.error("Description must be between 3 and 64 characters long");
+      setError("Description must be between 3 and 64 characters long");
+      return;
+    }
+
     if (sessionsToComplete < 1 || sessionsToComplete > 99) {
       toast.error("Sessions to complete must be between 1 and 99");
       setError("Sessions to complete must be between 1 and 99");
@@ -74,6 +80,18 @@ const Task = ({
   };
 
   const editTask = async () => {
+    if (editDescription.length < 3 || editDescription.length > 64) {
+      toast.error("Description must be between 3 and 64 characters long");
+      setError("Description must be between 3 and 64 characters long");
+      return;
+    }
+
+    if (editSessionsToComplete < 1 || editSessionsToComplete > 99) {
+      toast.error("Sessions to complete must be between 1 and 99");
+      setError("Sessions to complete must be between 1 and 99");
+      return;
+    }
+
     if (
       editSessionsToComplete <=
       userTasks.find((task) => task.id === selectedTask)?.sessionCount
@@ -93,6 +111,7 @@ const Task = ({
           },
         },
       );
+      setError("");
       toast.success("Task updated");
       setEditingTask(false);
       fetchTasks();
@@ -134,6 +153,19 @@ const Task = ({
   }, [selectedTask, userTasks]);
 
   useEffect(() => {
+    // if selected task status is completed, set selected task to 0
+    if (
+      userTasks.find((task) => task.id === selectedTask)?.sessionCount ===
+        userTasks.find((task) => task.id === selectedTask)
+          ?.sessionsToComplete &&
+      selectedTask !== 0
+    ) {
+      toast.info("Task completed");
+      setSelectedTask(0);
+    }
+  }, [userTasks, setSelectedTask, selectedTask]);
+
+  useEffect(() => {
     setEditingTask(false);
   }, [selectedTask]);
 
@@ -158,7 +190,6 @@ const Task = ({
           </button>
           <h2 className="mb-4 text-4xl font-semibold ">Create Task</h2>
           {error && <p className="text-red-500">{error}</p>}
-
           <p className="">Title</p>
           <input
             id="title"
@@ -194,9 +225,13 @@ const Task = ({
           </div>
           {creatingCategory && (
             <Categories
+              selectedTask={selectedTask}
+              setSelectedTask={setSelectedTask}
+              fetchTasks={fetchTasks}
               setCreatingCategory={setCreatingCategory}
               categories={userCategories}
               fetchCategories={fetchCategories}
+              fetchSessions={fetchSessions}
             />
           )}
           <p className="mt-2 ">Description</p>
@@ -263,6 +298,8 @@ const Task = ({
               </div>
               {editingTask ? (
                 <div>
+                  {error && <p className="text-red-500">{error}</p>}
+
                   <p className="mt-2 ">
                     Sessions needed to complete task (1-99)
                   </p>
