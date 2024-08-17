@@ -22,12 +22,6 @@ function Nav({ loggedIn, onLogout }) {
             {!loggedIn && (
               <div className="mt-2 flex justify-center text-2xl md:justify-end">
                 <Link
-                  to={PATH_URL + "/info"}
-                  className="mr-4 mt-2 block   hover:text-rose-900 lg:mt-0 lg:inline-block"
-                >
-                  Info
-                </Link>
-                <Link
                   to={PATH_URL + "/login"}
                   className="mr-4 mt-2 block   hover:text-rose-900 lg:mt-0 lg:inline-block"
                 >
@@ -43,12 +37,6 @@ function Nav({ loggedIn, onLogout }) {
             )}
             {loggedIn && (
               <div className="mt-2 flex justify-center text-2xl md:justify-end">
-                <Link
-                  to={PATH_URL + "/info"}
-                  className=" mx-2 mt-2 block hover:text-rose-900 sm:block lg:mr-4 lg:mt-3 lg:inline-block"
-                >
-                  Info
-                </Link>
                 <Link
                   to={PATH_URL + "/settings"}
                   className="mx-2 mt-2 block hover:text-rose-900 lg:mr-4 lg:mt-3 lg:inline-block"

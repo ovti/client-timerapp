@@ -11,18 +11,12 @@ const UserDataFetching = (userId) => {
 
   const fetchSettings = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/settings/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      const response = await axios.get(`${API_URL}/settings/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
       setSettings(response.data);
-      // console.log("Break duration:", response.data.breakDuration);
-      // console.log("Alarm sound:", response.data.alarmSound);
-      // console.log("Auto resume:", response.data.autoResume);
     } catch (error) {
       console.error("Error fetching settings:", error);
     }
@@ -30,14 +24,11 @@ const UserDataFetching = (userId) => {
 
   const fetchCategories = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/category/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      const response = await axios.get(`${API_URL}/category/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
       setCategories(response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -46,16 +37,12 @@ const UserDataFetching = (userId) => {
 
   const fetchSessions = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/sessions/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      const response = await axios.get(`${API_URL}/sessions/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
       setSessions(response.data);
-      // console.log("Sessions:", response.data);
     } catch (error) {
       console.error("Error fetching sessions:", error);
     }
@@ -63,16 +50,12 @@ const UserDataFetching = (userId) => {
 
   const fetchTasks = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/tasks/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      const response = await axios.get(`${API_URL}/tasks/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
       setTasks(response.data);
-      // console.log("Tasks:", response.data);
     } catch (error) {
       console.error("Error fetching tasks:", error);
     }
