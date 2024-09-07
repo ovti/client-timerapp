@@ -10,6 +10,7 @@ const Home = ({
   fetchSessions,
   fetchCategories,
   fetchTasks,
+  loggedIn,
 }) => {
   return (
     <Timer
@@ -21,6 +22,7 @@ const Home = ({
       fetchSessions={fetchSessions}
       fetchCategories={fetchCategories}
       fetchTasks={fetchTasks}
+      loggedIn={loggedIn}
     />
   );
 };
@@ -34,6 +36,7 @@ Home.propTypes = {
   fetchSessions: PropTypes.func.isRequired,
   fetchCategories: PropTypes.func.isRequired,
   fetchTasks: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 export default Home;

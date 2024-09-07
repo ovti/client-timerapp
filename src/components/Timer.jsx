@@ -17,11 +17,13 @@ const Timer = ({
   fetchSessions,
   fetchCategories,
   fetchTasks,
+  loggedIn,
 }) => {
   const userId = id;
   const userSettings = settings;
   const userCategories = categories;
   const userTasks = tasks;
+  const loggedInUser = loggedIn;
   const [sessionCount, setSessionCount] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(5);
@@ -167,7 +169,7 @@ const Timer = ({
     // const breakDuration = userSettings.breakDuration * 60 || 5 * 60;
     // setCurrentBreak(breakDuration);
 
-    if (!userId) {
+    if (!loggedInUser) {
       setCurrentBreak(5 * 60);
     } else {
       setCurrentBreak(userSettings.breakDuration * 60 || 5 * 60);
@@ -253,6 +255,23 @@ const Timer = ({
       setSelectedDuration(Number(value));
     }
   };
+
+  // reset timer when user logs out
+  useEffect(() => {
+    clearInterval(timer);
+    setTimer(null);
+    setIsTimerRunning(false);
+    setCurrentTimer(0);
+    setProgress(0);
+    setRemainingTime(0);
+    setSelectedTask(0);
+    setSelectedDuration(5);
+    setPaused(false);
+    setIsBreak(false);
+    setCurrentBreak(0);
+    clearInterval(breakTimer);
+    setBreakTimer(null);
+  }, [loggedInUser]);
 
   return (
     <>
@@ -382,7 +401,7 @@ const Timer = ({
             Today&apos;s Sessions
           </h2>
 
-          {userId ? (
+          {loggedInUser ? (
             // Show content if the user is logged in
             <>
               {sessionCount === 0 ? (
@@ -426,27 +445,31 @@ const Timer = ({
       </div>
       {!creatingTask && selectedTask === 0 && (
         <div className="mt-4 flex items-center justify-center align-middle">
-          <button
-            id="createTaskButton"
-            className=" rounded border-2 border-dashed border-red-500 px-20 py-10 text-xl font-bold  opacity-70 hover:bg-red-600"
-            onClick={toggleTaskForm}
-          >
-            + Create Task
-          </button>
+          {loggedInUser && (
+            <button
+              id="createTaskButton"
+              className=" rounded border-2 border-dashed border-red-500 px-20 py-10 text-xl font-bold  opacity-70 hover:bg-red-600"
+              onClick={toggleTaskForm}
+            >
+              + Create Task
+            </button>
+          )}
         </div>
       )}
-      <Task
-        userId={userId}
-        userCategories={userCategories}
-        fetchCategories={fetchCategories}
-        userTasks={userTasks}
-        fetchTasks={fetchTasks}
-        selectedTask={selectedTask}
-        setSelectedTask={setSelectedTask}
-        creatingTask={creatingTask}
-        setCreatingTask={setCreatingTask}
-        fetchSessions={fetchSessions}
-      />
+      {loggedInUser && (
+        <Task
+          userId={userId}
+          userCategories={userCategories}
+          fetchCategories={fetchCategories}
+          userTasks={userTasks}
+          fetchTasks={fetchTasks}
+          selectedTask={selectedTask}
+          setSelectedTask={setSelectedTask}
+          creatingTask={creatingTask}
+          setCreatingTask={setCreatingTask}
+          fetchSessions={fetchSessions}
+        />
+      )}
     </>
   );
 };
@@ -460,6 +483,7 @@ Timer.propTypes = {
   fetchCategories: PropTypes.func.isRequired,
   fetchSessions: PropTypes.func.isRequired,
   fetchTasks: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 export default Timer;

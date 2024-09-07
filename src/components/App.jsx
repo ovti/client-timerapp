@@ -124,6 +124,7 @@ function App() {
           fetchCategories={fetchCategories}
           fetchSessions={fetchSessions}
           fetchTasks={fetchTasks}
+          loggedIn={loggedIn}
         />
       )}
     </>
