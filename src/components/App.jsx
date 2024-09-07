@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Nav from "./Nav";
@@ -13,6 +13,7 @@ function App() {
   const [nickname, setNickname] = useState("");
   const userId = localStorage.getItem("userId");
   const navigateTo = useNavigate();
+  const location = useLocation();
 
   const PATH_URL = import.meta.env.VITE_BASE_PATH_URL;
 
@@ -58,6 +59,9 @@ function App() {
     handleLogin();
   }, []);
 
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
+
   return (
     <>
       <Nav
@@ -73,7 +77,7 @@ function App() {
         closeButton={true}
         position="top-right"
       />
-      {!loggedIn && (
+      {/* {!loggedIn && (
         <div className="my-9 flex items-center justify-center">
           <div className="grid grid-cols-1 gap-6">
             <p className="text-center text-xl font-semibold md:text-4xl">
@@ -81,7 +85,7 @@ function App() {
             </p>
           </div>
         </div>
-      )}
+      )} */}
       <Outlet
         context={{
           loggedIn,
@@ -98,7 +102,19 @@ function App() {
           fetchSettings,
         }}
       />
-      {loggedIn && (
+      {/* {loggedIn && (
+        <Home
+          id={id}
+          sessions={sessions}
+          categories={categories}
+          tasks={tasks}
+          settings={settings}
+          fetchCategories={fetchCategories}
+          fetchSessions={fetchSessions}
+          fetchTasks={fetchTasks}
+        />
+      )} */}
+      {!isAuthPage && (
         <Home
           id={id}
           sessions={sessions}

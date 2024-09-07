@@ -164,8 +164,14 @@ const Timer = ({
     }
 
     setIsBreak(true);
-    const breakDuration = userSettings.breakDuration * 60 || 5 * 60;
-    setCurrentBreak(breakDuration);
+    // const breakDuration = userSettings.breakDuration * 60 || 5 * 60;
+    // setCurrentBreak(breakDuration);
+
+    if (!userId) {
+      setCurrentBreak(5 * 60);
+    } else {
+      setCurrentBreak(userSettings.breakDuration * 60 || 5 * 60);
+    }
     const newBreakTimer = setInterval(() => {
       setCurrentBreak((prev) => {
         const nextBreak = prev - 1;
@@ -357,7 +363,11 @@ const Timer = ({
             value={selectedTask}
             onChange={(e) => setSelectedTask(Number(e.target.value))}
           >
-            <option value="0">Select task for this session</option>
+            {userId ? (
+              <option value="0">Select task for this session</option>
+            ) : (
+              <option value="0">Please login to select a task</option>
+            )}
             {userTasks
               .filter((task) => task.status === "pending")
               .map((task) => (
@@ -371,33 +381,47 @@ const Timer = ({
           <h2 className="mb-2 text-xl font-semibold text-gray-200">
             Today&apos;s Sessions
           </h2>
-          {sessionCount === 0 ? (
-            <p className="text-m text-gray-200">No sessions today</p>
-          ) : (
+
+          {userId ? (
+            // Show content if the user is logged in
             <>
-              <p className="text-m text-gray-200">
-                Sessions today: {sessionCount}
-              </p>
-              <p className="text-m text-gray-200">
-                Total duration today: {totalDuration}{" "}
-                {totalDuration === 1 ? "minute" : "minutes"}
-              </p>
+              {sessionCount === 0 ? (
+                <p className="text-m text-gray-200">No sessions today</p>
+              ) : (
+                <>
+                  <p className="text-m text-gray-200">
+                    Sessions today: {sessionCount}
+                  </p>
+                  <p className="text-m text-gray-200">
+                    Total duration today: {totalDuration}{" "}
+                    {totalDuration === 1 ? "minute" : "minutes"}
+                  </p>
+                </>
+              )}
+
+              <div className="mt-4 flex items-center justify-between align-middle lg:w-full">
+                <Link
+                  to={PATH_URL + "/sessions"}
+                  className="rounded bg-fire-brick p-2 text-white hover:bg-red-600 lg:mr-2 lg:px-4 lg:py-2"
+                >
+                  View all sessions
+                </Link>
+                <Link
+                  to={PATH_URL + "/completed-tasks"}
+                  className="rounded bg-fire-brick p-2 text-white hover:bg-red-600 lg:px-4 lg:py-2"
+                >
+                  View completed tasks
+                </Link>
+              </div>
             </>
+          ) : (
+            // Show message if no user is logged in
+            <div className="mt-4 flex items-center justify-center align-middle">
+              <p className="text-center text-xl font-semibold text-gray-200">
+                Please login or register to save your progress
+              </p>
+            </div>
           )}
-          <div className="mt-4 flex items-center justify-between align-middle lg:w-full">
-            <Link
-              to={PATH_URL + "/sessions"}
-              className="rounded bg-fire-brick p-2 text-white hover:bg-red-600 lg:mr-2 lg:px-4 lg:py-2"
-            >
-              View all sessions
-            </Link>
-            <Link
-              to={PATH_URL + "/completed-tasks"}
-              className=" rounded bg-fire-brick p-2 text-white hover:bg-red-600  lg:px-4 lg:py-2"
-            >
-              View completed tasks
-            </Link>
-          </div>
         </div>
       </div>
       {!creatingTask && selectedTask === 0 && (
