@@ -186,6 +186,21 @@ const Timer = ({
   };
 
   useEffect(() => {
+    if (isTimerRunning && !isBreak) {
+      document.title = `Time left: ${Math.floor(currentTimer / 60)}:${
+        currentTimer % 60 < 10 ? `0${currentTimer % 60}` : currentTimer % 60
+      }`;
+    } else if (isBreak && breakTimer) {
+      document.title = `Break time: ${Math.floor(currentBreak / 60)}:${
+        currentBreak % 60 < 10 ? `0${currentBreak % 60}` : currentBreak % 60
+      }`;
+    }
+    return () => {
+      document.title = "Timer App";
+    };
+  }, [currentTimer, currentBreak, isBreak, isTimerRunning]);
+
+  useEffect(() => {
     if (!isTimerRunning && currentTimer === 0 && timer) {
       saveTimerSession();
       setTimer(null);
