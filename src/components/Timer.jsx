@@ -256,7 +256,6 @@ const Timer = ({
     }
   };
 
-  // reset timer when user logs out
   useEffect(() => {
     clearInterval(timer);
     setTimer(null);
@@ -402,7 +401,6 @@ const Timer = ({
           </h2>
 
           {loggedInUser ? (
-            // Show content if the user is logged in
             <>
               {sessionCount === 0 ? (
                 <p className="text-m text-gray-200">No sessions today</p>
@@ -434,7 +432,6 @@ const Timer = ({
               </div>
             </>
           ) : (
-            // Show message if no user is logged in
             <div className="mt-4 flex items-center justify-center align-middle">
               <p className="text-center text-xl font-semibold text-gray-200">
                 Please login or register to save your progress

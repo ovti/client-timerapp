@@ -45,7 +45,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center md:mt-10">
       <div className="grid grid-cols-1 gap-2">
         <h1 className="text-center text-4xl font-bold">Login</h1>
         <input

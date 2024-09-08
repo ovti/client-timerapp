@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -10,6 +10,7 @@ const Sessions = () => {
   const [sessionsPerPage] = useState(5);
   const [sortDirection, setSortDirection] = useState("asc");
   const [sortBy, setSortBy] = useState("category");
+  const [loaded, setLoaded] = useState(false);
   const navigateTo = useNavigate();
 
   const API_URL = import.meta.env.VITE_BASE_API_URL;
@@ -163,9 +164,15 @@ const Sessions = () => {
     }
   };
 
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
   return (
     <>
-      <div className="m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-5/12">
+      <div
+        className={`m-2 rounded border border-fire-brick md:mx-auto md:w-10/12 lg:mx-auto lg:mt-8 lg:w-5/12 ${loaded ? "pop-in" : ""}`}
+      >
         <div className="bg-red-500 p-4">
           <button
             onClick={() => navigateTo(PATH_URL + "/")}
