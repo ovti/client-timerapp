@@ -1,4 +1,4 @@
-# https://wierzba.wzks.uj.edu.pl/~21_zalubski/url-app/
+# http://wierzba.wzks.uj.edu.pl/~21_zalubski/timer-app/
 # API: https://github.com/ovti/timerapp
 
 # React + Vite
