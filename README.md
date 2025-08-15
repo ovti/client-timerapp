@@ -1,11 +1,15 @@
-# http://wierzba.wzks.uj.edu.pl/~21_zalubski/timer-app/
-# API: https://github.com/ovti/timerapp
+# Timer App
 
-# React + Vite
+## http://wierzba.wzks.uj.edu.pl/~21_zalubski/timer-app/
+## Backend: https://github.com/ovti/timerapp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Timer App** is a productivity tool designed to help users follow the Pomodoro technique. Users can register, track their Pomodoro sessions, and monitor their stats. 
+Built with React, Tailwind CSS, and a Node.js backend with Express, Sequelize, and MySQL.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Pomodoro Timer**
+- **User Registration & Authentication** 
+- **Session Tracking**
+- **Stats Dashboard**
+- **Responsive UI**
