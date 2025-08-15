@@ -4,7 +4,7 @@
 ## Backend: https://github.com/ovti/timerapp
 
 **Timer App** is a productivity tool designed to help users follow the Pomodoro technique. Users can register, track their Pomodoro sessions, and monitor their stats. 
-Built with React, Tailwind CSS, and a Node.js backend with Express, Sequelize, and MySQL.
+Built with **React**, **Tailwind CSS**, and a Node.js backend with **Express**, **Sequelize**, and **MySQL**.
 
 ## Features
 
